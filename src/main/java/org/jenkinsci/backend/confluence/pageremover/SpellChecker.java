@@ -45,7 +45,7 @@ public class SpellChecker {
             if (isValidWord(t))
                 continue;
             err++;
-//            System.out.println(t);
+            System.out.println(t);
         }
 
         return err*100.0f/total;
@@ -55,25 +55,30 @@ public class SpellChecker {
      * Remove textual decoration.
      */
     private String undecorate(String t) {
-        // because we don't use ' as a word separator, it can show up in the beginning or end
-        if (t.startsWith("'"))
-            t = t.substring(1);
-
-        if (t.endsWith("'"))
-            t = t.substring(0,t.length()-1);
+        // trim off decorators from head and tail
+        while (t.length()>0) {
+            if (isDecraotr(t.charAt(0)))
+                t = t.substring(1);
+            else
+                break;
+        }
+        while (t.length()>0) {
+            if (isDecraotr(t.charAt(t.length()-1)))
+                t = t.substring(0,t.length()-1);
+            else
+                break;
+        }
 
         if (t.length()==0)  return "harmless";
 
-        // string like *foo* or "bar"
-        char first = t.charAt(0);
-        if (t.length()>2 && first==t.charAt(t.length()-1) && DECORATOR.indexOf(first)>=0)
-            return t.substring(1,t.length()-1);
-
         return t;
-
     }
 
-    private static final String DECORATOR = "*-_\"'";
+    private boolean isDecraotr(char c) {
+        return DECORATOR.indexOf(c)>=0;
+    }
+
+    private static final String DECORATOR = "*-_\"'?!";
 
     private boolean isValidWord(String t) {
         if (words.contains(t.toLowerCase(Locale.ENGLISH)))
