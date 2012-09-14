@@ -1,40 +1,56 @@
-package org.jvnet.hudson.backend.confluence.pageremover;
+package org.jenkinsci.backend.confluence.pageremover;
 
 import hudson.plugins.jira.soap.ConfluenceSoapService;
 import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemotePage;
+import hudson.plugins.jira.soap.RemoteSearchResult;
 import hudson.plugins.jira.soap.RemoteSpaceSummary;
 import hudson.plugins.jira.soap.RemoteUserInformation;
-import hudson.plugins.jira.soap.InvalidSessionException;
 import org.jvnet.hudson.confluence.Confluence;
 
+import javax.xml.rpc.ServiceException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.rmi.RemoteException;
 
 public class App {
+    private final ConfluenceSoapService service;
+    private final String token;
+    private SpellChecker spellChecker;
+
     public static void main(String[] args) throws Exception {
-        ConfluenceSoapService service = Confluence.connect(new URL("http://wiki.hudson-ci.org/"));
+        new App().run();
+    }
+
+    public void run() throws RemoteException {
+        testopia();
+    }
+
+    private SpellChecker getSpellChecker() {
+        if (spellChecker==null)
+            spellChecker = new SpellChecker();
+        return spellChecker;
+    }
+
+    public App() throws IOException, ServiceException {
+        service = Confluence.connect(new URL("https://wiki.jenkins-ci.org/"));
 
         Properties props = new Properties();
-        File credential = new File(new File(System.getProperty("user.home")), ".hudson.confluence");
+        File credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org");
         if (!credential.exists())
             throw new IOException("You need to have userName and password in "+credential);
         props.load(new FileInputStream(credential));
-        String token = service.login(props.getProperty("userName"),props.getProperty("password"));
-
-        justListUsers(service,token);
-//        removeSpamProfiles(service,token);
-//        removeSpamBookmarkPages(service,token);
-//        removeSpamUsers(service, token);
-//        removeSpamPages(service, token);
+        token = service.login(props.getProperty("userName"), props.getProperty("password"));
     }
 
     /**
@@ -52,7 +68,7 @@ public class App {
      */
     private static void removeSpamBookmarkPages(ConfluenceSoapService service, String token) throws RemoteException {
         int n=0;
-        for (RemotePageSummary p : service.getPages(token,"HUDSON")) {
+        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
             if (isForbidden(p.getTitle())) {
                 System.out.println(p.getTitle());
 //                service.removePage(token,p.getId());
@@ -131,18 +147,69 @@ public class App {
         System.out.println(n);
     }
 
-    private static void removeSpamPages(ConfluenceSoapService service, String token) throws RemoteException {
+    /**
+     * My attempt at listing pages that recently changed, but didn't work
+     * unless some query string is supplied.
+     */
+    private void search() throws Exception {
+        HashMap params = new HashMap();
+        params.put("type","page");
+        params.put("modified", "LASTWEEK");
+        for (RemoteSearchResult r : service.search(token, "", params, 1000)) {
+            System.out.println(r.getTitle());
+        }
+    }
+
+    private void spellCheck() throws RemoteException {
+        testopia();
+
+        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
+            RemotePage pg = service.getPage(token, p.getId());
+            if (pg.getModified().getTimeInMillis()+ TimeUnit.DAYS.toMillis(7) < System.currentTimeMillis())
+                continue;   // not updated
+
+            float f = rateOf(pg);
+            System.out.printf("%2.2f\t%s\t%s\n",f,pg.getModifier(),p.getTitle());
+        }
+//
+//        float f1 = rateOf("Git plugin");
+//        System.out.println("================================");
+//        float f2 = rateOf("Promo kartu member Indomaret minimarket waralaba Indonesia");
+//        System.out.printf("%f vs %f\n", f1, f2);
+    }
+
+    private void testopia() throws RemoteException {
+        float tt = rateOf("Testopia plugin");
+        System.out.println(tt);
+        return;
+    }
+
+    private float rateOf(String title) throws RemoteException {
+        return rateOf(service.getPage(token, "JENKINS", title));
+    }
+
+    private float rateOf(RemotePage p) {
+        String text = p.getContent();
+        text = new ConfluenceMarkupNormalizer().translate(text);
+        return getSpellChecker().errorRateOf(text);
+    }
+
+
+    private void removeSpamPages() throws RemoteException {
         int cnt = 0;
-        for (RemotePageSummary p : service.getPages(token,"ds")) {
+        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
             if (isForbidden(p.getTitle())) {
                 System.out.println(p.getTitle());
-                service.removePage(token,p.getId());
+//                service.removePage(token,p.getId());
                 cnt++;
             }
         }
-        System.out.printf("%d pages removed",cnt);
+        System.out.printf("%d pages removed", cnt);
     }
 
+    /**
+     * If it contains any of the forbidden words?
+     */
     private static boolean isForbidden(String title) {
         for (Pattern p : FORBIDDEN) {
             if (p.matcher(title).find())
