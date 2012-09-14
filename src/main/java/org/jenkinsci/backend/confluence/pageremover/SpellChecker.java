@@ -45,7 +45,7 @@ public class SpellChecker {
             if (isValidWord(t))
                 continue;
             err++;
-            System.out.println(t);
+//            System.out.println(t);
         }
 
         return err*100.0f/total;

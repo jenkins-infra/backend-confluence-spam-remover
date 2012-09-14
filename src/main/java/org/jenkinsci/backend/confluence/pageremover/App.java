@@ -5,6 +5,7 @@ import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemotePage;
 import hudson.plugins.jira.soap.RemoteSearchResult;
 import hudson.plugins.jira.soap.RemoteSpaceSummary;
+import hudson.plugins.jira.soap.RemoteUser;
 import hudson.plugins.jira.soap.RemoteUserInformation;
 import org.jvnet.hudson.confluence.Confluence;
 
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class App {
     }
 
     public void run() throws RemoteException {
-        testopia();
+        spellCheck();
     }
 
     private SpellChecker getSpellChecker() {
@@ -160,22 +162,32 @@ public class App {
         }
     }
 
+    /**
+     * Common spams we see involves pages that doesn't look like English.
+     *
+     * This function uses spell checker to pick up pages that appear to be non-English.
+     */
     private void spellCheck() throws RemoteException {
-        testopia();
-
         for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
             RemotePage pg = service.getPage(token, p.getId());
-            if (pg.getModified().getTimeInMillis()+ TimeUnit.DAYS.toMillis(7) < System.currentTimeMillis())
-                continue;   // not updated
+
+            // we only care about recently updated pages
+            if (olderThanDays(pg.getModified(),14))
+                continue;
 
             float f = rateOf(pg);
-            System.out.printf("%2.2f\t%s\t%s\n",f,pg.getModifier(),p.getTitle());
+
+            // page created by new users are more likely spam
+            RemoteUserInformation u = service.getUserInformation(token, pg.getModifier());
+            if (olderThanDays(u.getCreationDate(),14))
+                f += 10;
+
+            System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
         }
-//
-//        float f1 = rateOf("Git plugin");
-//        System.out.println("================================");
-//        float f2 = rateOf("Promo kartu member Indomaret minimarket waralaba Indonesia");
-//        System.out.printf("%f vs %f\n", f1, f2);
+    }
+
+    private boolean olderThanDays(Calendar c,int n) {
+        return c.getTimeInMillis()+TimeUnit.DAYS.toMillis(n) < System.currentTimeMillis();
     }
 
     private void testopia() throws RemoteException {
