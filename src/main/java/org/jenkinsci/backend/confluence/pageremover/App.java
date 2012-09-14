@@ -183,17 +183,16 @@ public class App {
                 f += 10;
 
             System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
+
+            if (I_KNOW_WHAT_IM_DOING && f>60) {
+                service.removePage(token,pg.getId());
+                System.out.println("  => ZAPPED");
+            }
         }
     }
 
     private boolean olderThanDays(Calendar c,int n) {
         return c.getTimeInMillis()+TimeUnit.DAYS.toMillis(n) < System.currentTimeMillis();
-    }
-
-    private void testopia() throws RemoteException {
-        float tt = rateOf("Testopia plugin");
-        System.out.println(tt);
-        return;
     }
 
     private float rateOf(String title) throws RemoteException {
@@ -293,4 +292,6 @@ public class App {
 
             "\0"
     );
+
+    boolean I_KNOW_WHAT_IM_DOING = false;
 }
