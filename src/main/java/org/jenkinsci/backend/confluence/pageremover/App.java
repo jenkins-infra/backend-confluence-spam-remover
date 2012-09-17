@@ -1,6 +1,8 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
 import hudson.plugins.jira.soap.ConfluenceSoapService;
+import hudson.plugins.jira.soap.InvalidSessionException;
+import hudson.plugins.jira.soap.NotPermittedException;
 import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemotePage;
 import hudson.plugins.jira.soap.RemoteSearchResult;
@@ -14,9 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -162,12 +166,35 @@ public class App {
         }
     }
 
+    public class PossibleSpamPage {
+        /**
+         * 0-100 of likeliness of SPAM. 100 is definitely spam, 0 is probably not.
+         */
+        public final float score;
+
+        public final RemotePage page;
+
+        public PossibleSpamPage(float score, RemotePage page) {
+            this.score = score;
+            this.page = page;
+        }
+
+        public void delete() throws RemoteException {
+            service.removePage(token,page.getId());
+        }
+
+        public boolean isVeryLikelySpam() {
+            return score > 60;
+        }
+    }
+
     /**
      * Common spams we see involves pages that doesn't look like English.
      *
      * This function uses spell checker to pick up pages that appear to be non-English.
      */
-    private void spellCheck() throws RemoteException {
+    public List<PossibleSpamPage> spellCheck() throws RemoteException {
+        List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
         for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
             RemotePage pg = service.getPage(token, p.getId());
 
@@ -182,13 +209,12 @@ public class App {
             if (olderThanDays(u.getCreationDate(),14))
                 f += 10;
 
-            System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
+            r.add(new PossibleSpamPage(f,pg));
 
-            if (I_KNOW_WHAT_IM_DOING && f>60) {
-                service.removePage(token,pg.getId());
-                System.out.println("  => ZAPPED");
-            }
+            System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
         }
+
+        return r;
     }
 
     private boolean olderThanDays(Calendar c,int n) {
@@ -292,6 +318,4 @@ public class App {
 
             "\0"
     );
-
-    boolean I_KNOW_WHAT_IM_DOING = false;
 }
