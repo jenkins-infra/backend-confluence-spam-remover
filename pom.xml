@@ -16,6 +16,31 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-jarsigner-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <id>signWar</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <archive>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</archive>
+              <!--
+                during the development, debug profile will cause
+                the jars to be signed by a self-certified dummy public key.
+
+                For release, you should define the real values in ~/.m2/settings.xml
+              -->
+              <alias>${hudson.sign.alias}</alias>
+              <storepass>${hudson.sign.storepass}</storepass>
+              <keystore>${hudson.sign.keystore}</keystore>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -55,4 +80,18 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>debug</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <hudson.sign.alias>jenkins</hudson.sign.alias>
+        <hudson.sign.keystore>dummy.keystore</hudson.sign.keystore>
+        <hudson.sign.storepass>jenkins</hudson.sign.storepass>
+      </properties>
+    </profile>
+  </profiles>
 </project>
