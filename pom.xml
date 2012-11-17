@@ -58,6 +58,12 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <prepareVerifyArgs>-P release</prepareVerifyArgs>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
