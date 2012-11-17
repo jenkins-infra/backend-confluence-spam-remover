@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<jnlp spec="1.0+" codebase="https://ci.jenkins-ci.org/view/Infrastructure/job/infra_backend-confluence-spam-remover/">
+  <information>
+    <title>Confluence Spam Remover</title>
+    <vendor>Jenkins project</vendor>
+    <homepage href="https://jenkins-ci.org/"/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+"/>
+    <jar href="http://repo.jenkins-ci.org/releases/org/jenkins-ci/backend/confluence-spam-remover/1.0/confluence-spam-remover-1.0-jar-with-dependencies.jar"/>
+  </resources>
+  <application-desc main-class="org.jenkinsci.backend.confluence.pageremover.SpamKiller" />
+</jnlp>
