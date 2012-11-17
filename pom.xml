@@ -9,7 +9,7 @@
   </parent>
 
   <groupId>org.jenkins-ci.backend</groupId>
-  <artifactId>confluence-bulk-page-remover</artifactId>
+  <artifactId>confluence-spam-remover</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Bulk Page removal tool to clean up spams</name>
 
@@ -94,4 +94,10 @@
       </properties>
     </profile>
   </profiles>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/backend-${project.artifctId}.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/backend-${project.artifactId}.git</developerConnection>
+    <url>http://github.com/jenkinsci/${project.artifactId}-plugin</url>
+  </scm>
 </project>
