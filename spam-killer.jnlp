@@ -10,7 +10,7 @@
   </security>
   <resources>
     <j2se version="1.5+"/>
-    <jar href="http://repo.jenkins-ci.org/releases/org/jenkins-ci/backend/confluence-spam-remover/1.0/confluence-spam-remover-1.1-jar-with-dependencies.jar"/>
+    <jar href="http://repo.jenkins-ci.org/releases/org/jenkins-ci/backend/confluence-spam-remover/1.1/confluence-spam-remover-1.1-jar-with-dependencies.jar"/>
   </resources>
   <application-desc main-class="org.jenkinsci.backend.confluence.pageremover.SpamKiller" />
 </jnlp>
