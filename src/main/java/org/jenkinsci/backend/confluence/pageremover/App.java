@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -210,6 +211,42 @@ public class App {
                 f += 10;
 
             r.add(new PossibleSpamPage(f,pg));
+
+            System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
+        }
+
+        return r;
+    }
+
+    private static final Set<String> FLAG_WORDS = new HashSet<String>(Arrays.asList(
+            "watch","season","episode","free","streaming","live","hdqtv","now","movie"
+    ));
+
+    /**
+     * A spam attack of Nov 2013 involves lots of pages whose page titles tries
+     * to send people to watch some kind of online videos.
+     */
+    public List<PossibleSpamPage> watchFreeVideo() throws RemoteException {
+        List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
+        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
+            float f=0;
+            for (String token : p.getTitle().split(" "))
+                if (FLAG_WORDS.contains(token.toLowerCase()))
+                    f+=20;
+
+            if (f<10)   continue;
+
+            RemotePage pg = service.getPage(token, p.getId());
+
+            // page created by new users are more likely spam
+            RemoteUserInformation u = service.getUserInformation(token, pg.getModifier());
+            if (!olderThanDays(u.getCreationDate(),14))
+                f += 10;
+
+            r.add(new PossibleSpamPage(f,pg));
+
+            if (f<10)
+                continue;
 
             System.out.printf("%02.2f\t%16s\t%s\n",f,pg.getModifier(),p.getTitle());
         }

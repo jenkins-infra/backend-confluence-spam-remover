@@ -95,6 +95,7 @@ public class SpamKiller extends JFrame {
         runAsync(new Callable<Void>() {
             public Void call() throws Exception {
                 possibleSpams = app.spellCheck();
+//                possibleSpams = app.watchFreeVideo();
 //                possibleSpams = fakeData();
 
                 spamFlag.clear();
