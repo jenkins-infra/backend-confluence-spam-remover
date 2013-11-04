@@ -1,13 +1,10 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
 import hudson.plugins.jira.soap.ConfluenceSoapService;
-import hudson.plugins.jira.soap.InvalidSessionException;
-import hudson.plugins.jira.soap.NotPermittedException;
 import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemotePage;
 import hudson.plugins.jira.soap.RemoteSearchResult;
 import hudson.plugins.jira.soap.RemoteSpaceSummary;
-import hudson.plugins.jira.soap.RemoteUser;
 import hudson.plugins.jira.soap.RemoteUserInformation;
 import org.jvnet.hudson.confluence.Confluence;
 
@@ -22,7 +19,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +29,10 @@ import java.rmi.RemoteException;
 public class App {
     private final ConfluenceSoapService service;
     private final String token;
+    /**
+     * Key of Wiki space, like "JENKINS"
+     */
+    private final String space = "JENKINS";
     private SpellChecker spellChecker;
 
     public static void main(String[] args) throws Exception {
@@ -196,7 +196,7 @@ public class App {
      */
     public List<PossibleSpamPage> spellCheck() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
+        for (RemotePageSummary p : service.getPages(token, space)) {
             RemotePage pg = service.getPage(token, p.getId());
 
             // we only care about recently updated pages
@@ -228,7 +228,7 @@ public class App {
      */
     public List<PossibleSpamPage> watchFreeVideo() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
+        for (RemotePageSummary p : service.getPages(token, space)) {
             float f=0;
             for (String token : p.getTitle().split(" "))
                 if (FLAG_WORDS.contains(token.toLowerCase()))
@@ -259,7 +259,7 @@ public class App {
     }
 
     private float rateOf(String title) throws RemoteException {
-        return rateOf(service.getPage(token, "JENKINS", title));
+        return rateOf(service.getPage(token, space, title));
     }
 
     private float rateOf(RemotePage p) {
@@ -271,7 +271,7 @@ public class App {
 
     private void removeSpamPages() throws RemoteException {
         int cnt = 0;
-        for (RemotePageSummary p : service.getPages(token,"JENKINS")) {
+        for (RemotePageSummary p : service.getPages(token, space)) {
             if (isForbidden(p.getTitle())) {
                 System.out.println(p.getTitle());
 //                service.removePage(token,p.getId());
