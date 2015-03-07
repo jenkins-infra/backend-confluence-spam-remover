@@ -17,10 +17,10 @@ import java.io.StringWriter;
  *
  * @author Kohsuke Kawaguchi
  */
-public class EmailProcessor {
+public class Spambot {
 
     public static void main(String[] args) throws Exception {
-        System.exit(new EmailProcessor().run());
+        System.exit(new Spambot().run());
     }
 
     /**

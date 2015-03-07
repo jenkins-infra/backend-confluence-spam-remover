@@ -27,7 +27,7 @@ public class LanguageDetection {
         try {
             List<String> profiles = new ArrayList<String>();
             for (String lang : Arrays.asList("en", "id", "ja")) {
-                profiles.add(IOUtils.toString(EmailProcessor.class.getResourceAsStream("/profiles/" + lang)));
+                profiles.add(IOUtils.toString(Spambot.class.getResourceAsStream("/profiles/" + lang)));
             }
             DetectorFactory.loadProfile(profiles);
         } catch (Exception e) {
