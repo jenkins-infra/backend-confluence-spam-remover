@@ -24,6 +24,8 @@ public class EmailProcessor {
             return;
         }
 
+        System.err.println("Parsed "+n);
+
         if (n.action.equals("added")) {
             RemotePage p = new Connection().getPage("JENKINS", n.pageTitle);
             Language lang = new LanguageDetection().detect(p.getContent());
