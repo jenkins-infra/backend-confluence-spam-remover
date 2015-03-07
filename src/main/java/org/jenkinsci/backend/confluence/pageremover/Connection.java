@@ -27,7 +27,9 @@ public class Connection {
         service = Confluence.connect(new URL("https://wiki.jenkins-ci.org/"));
 
         Properties props = new Properties();
-        File credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org");
+        File credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org.spambot");
+        if (!credential.exists())
+            credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org");
         if (!credential.exists())
             throw new IOException("You need to have userName and password in "+credential);
         props.load(new FileInputStream(credential));
