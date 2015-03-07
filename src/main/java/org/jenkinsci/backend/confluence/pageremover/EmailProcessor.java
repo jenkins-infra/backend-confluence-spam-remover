@@ -6,6 +6,7 @@ import hudson.plugins.jira.soap.RemotePage;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
@@ -28,7 +29,9 @@ public class EmailProcessor {
             Language lang = new LanguageDetection().detect(p.getContent());
 
             Message reply = msg.reply(false);
-            reply.setContent("Language detection: "+lang.toString(),"text/plain");
+            reply.setFrom(new InternetAddress("spambot@infradna.com"));
+            String body = String.format("Language detection: %s\nWiki: %s", lang, n);
+            reply.setContent(body,"text/plain");
             Transport.send(reply);
         }
     }

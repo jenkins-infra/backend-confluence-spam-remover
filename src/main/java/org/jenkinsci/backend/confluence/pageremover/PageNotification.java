@@ -35,6 +35,15 @@ public class PageNotification {
         this.authorID = authorID;
     }
 
+    @Override
+    public String toString() {
+        return "PageNotification{" +
+                "action='" + action + '\'' +
+                ", pageTitle='" + pageTitle + '\'' +
+                ", authorID='" + authorID + '\'' +
+                '}';
+    }
+
     /**
      * Parse the email as confluence notification.
      * If the email doesn't match, return null.
