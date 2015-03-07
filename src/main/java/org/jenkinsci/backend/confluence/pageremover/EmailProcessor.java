@@ -30,7 +30,7 @@ public class EmailProcessor {
             RemotePage p = new Connection().getPage("JENKINS", n.pageTitle);
             Language lang = new LanguageDetection().detect(p.getContent());
 
-            String body = String.format("Language detection: %s\nWiki: %s", lang, n);
+            String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
             System.err.println(body);
 
             Message reply = msg.reply(false);
