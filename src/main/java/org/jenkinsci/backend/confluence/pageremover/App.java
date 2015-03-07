@@ -184,8 +184,8 @@ public class App {
      */
     public List<PossibleSpamPage> spellCheck() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
-            RemotePage pg = con.service.getPage(con.token, p.getId());
+        for (RemotePageSummary p : con.getPages(space)) {
+            RemotePage pg = con.getPage(p.getId());
 
             // we only care about recently updated pages
             if (olderThanDays(pg.getModified(),14))
@@ -194,7 +194,7 @@ public class App {
             float f = rateOf(pg);
 
             // page created by new users are more likely spam
-            RemoteUserInformation u = con.service.getUserInformation(con.token, pg.getModifier());
+            RemoteUserInformation u = con.getUserInformation(pg.getModifier());
             if (olderThanDays(u.getCreationDate(),14))
                 f += 10;
 
@@ -216,7 +216,7 @@ public class App {
      */
     public List<PossibleSpamPage> watchFreeVideo() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
+        for (RemotePageSummary p : con.getPages(space)) {
             float f=0;
             for (String token : p.getTitle().split(" "))
                 if (FLAG_WORDS.contains(token.toLowerCase()))
@@ -224,10 +224,10 @@ public class App {
 
             if (f<10)   continue;
 
-            RemotePage pg = con.service.getPage(con.token, p.getId());
+            RemotePage pg = con.getPage(p.getId());
 
             // page created by new users are more likely spam
-            RemoteUserInformation u = con.service.getUserInformation(con.token, pg.getModifier());
+            RemoteUserInformation u = con.getUserInformation(pg.getModifier());
             if (!olderThanDays(u.getCreationDate(),14))
                 f += 10;
 
@@ -247,7 +247,7 @@ public class App {
     }
 
     private float rateOf(String title) throws RemoteException {
-        return rateOf(con.service.getPage(con.token, space, title));
+        return rateOf(con.getPage(space, title));
     }
 
     private float rateOf(RemotePage p) {
@@ -259,7 +259,7 @@ public class App {
 
     private void removeSpamPages() throws RemoteException {
         int cnt = 0;
-        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
+        for (RemotePageSummary p : con.getPages(space)) {
             if (isForbidden(p.getTitle())) {
                 System.out.println(p.getTitle());
 //                service.removePage(token,p.getId());
