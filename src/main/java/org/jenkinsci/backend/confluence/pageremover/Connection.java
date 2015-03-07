@@ -51,4 +51,8 @@ public class Connection {
     public RemoteUserInformation getUserInformation(String userId) throws RemoteException {
         return service.getUserInformation(token,userId);
     }
+
+    public void removePage(long pageId) throws RemoteException {
+        service.removePage(token,pageId);
+    }
 }
