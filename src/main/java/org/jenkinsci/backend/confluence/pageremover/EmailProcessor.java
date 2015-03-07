@@ -67,7 +67,7 @@ public class EmailProcessor {
      */
     private void removePage(MimeMessage reply) throws Exception {
         String content = reply.getContent().toString();
-        if (content.contains("\nSPAM\n")) {
+        if (content.contains("\nKILL SPAM\n")) {
             // instruction to remove
             String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
             try {
