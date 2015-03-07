@@ -1,0 +1,554 @@
+Date: Sat, 7 Mar 2015 01:55:00 +0000 (UTC)
+From: Jenkins Wiki <noreply@jenkins-ci.org>
+To: kk@kohsuke.org
+Message-ID: <211144681.10127.1425693300112.JavaMail.wiki@eggplant.jenkins-ci.org>
+Subject: [confluence] Jenkins > OWASP Dependency-Check Plugin
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Precedence: bulk
+Auto-Submitted: auto-generated
+
+<html>
+<head>
+    <base href=3D"https://wiki.jenkins-ci.org">
+            <link rel=3D"stylesheet" href=3D"/s/2037/5/1/_/styles/combined.=
+css?spaceKey=3DJENKINS&amp;forWysiwyg=3Dtrue" type=3D"text/css">
+    </head>
+<body style=3D"background: white;" bgcolor=3D"white" class=3D"email-body">
+<div id=3D"pageContent">
+<div id=3D"notificationFormat">
+<div class=3D"wiki-content">
+<div class=3D"email">
+    <h2><a href=3D"https://wiki.jenkins-ci.org/display/JENKINS/OWASP+Depend=
+ency-Check+Plugin">OWASP Dependency-Check Plugin</a></h2>
+    <h4>Page <b>edited</b> by             <a href=3D"https://wiki.jenkins-c=
+i.org/display/~sspringett">Steve Springett</a>
+    </h4>
+        <br/>
+                         <h4>Changes (1)</h4>
+                                =20
+   =20
+<div id=3D"page-diffs">
+                    <table class=3D"diff" cellpadding=3D"0" cellspacing=3D"=
+0">
+   =20
+            <tr><td class=3D"diff-snipped" >...<br></td></tr>
+            <tr><td class=3D"diff-unchanged" >h1. Version History <br> <br>=
+</td></tr>
+            <tr><td class=3D"diff-added-lines" style=3D"background-color: #=
+dfd;">h4. Version 1.2.9 (March 6, 2015) <br> <br>* Updated core to Dependen=
+cy-Check v1.2.9 <br>* Added warning if the Maven Central or Nexus analyzer =
+are disabled <br>* Added option to bypass Jenkins proxy configuration when =
+downloading NVD feed <br>* Updated analysis-core to v1.69 <br>* Changed lab=
+el names on tabs <br> <br></td></tr>
+            <tr><td class=3D"diff-unchanged" >h4. Version 1.2.8 (December 2=
+8, 2014) <br> <br></td></tr>
+            <tr><td class=3D"diff-snipped" >...<br></td></tr>
+   =20
+            </table>
+    </div>                            <h4>Full Content</h4>
+                    <div class=3D"notificationGreySide">
+        <h4><a name=3D"OWASPDependency-CheckPlugin-PluginInformation"></a>P=
+lugin Information</h4>
+<div class=3D'table-wrap'>
+<table class=3D'confluenceTable'><tbody>
+<tr>
+<th class=3D'confluenceTh'> Plugin ID </th>
+<td class=3D'confluenceTd'> dependency-check-jenkins-plugin </td>
+<th class=3D'confluenceTh'> Changes </th>
+<td class=3D'confluenceTd'> <a href=3D"https://github.com/jenkinsci/depende=
+ncy-check-plugin/compare/dependency-check-jenkins-plugin-1.2.7.1...dependen=
+cy-check-jenkins-plugin-1.2.8" class=3D"external-link" rel=3D"nofollow">In =
+Latest Release</a><br/>
+<a href=3D"https://github.com/jenkinsci/dependency-check-plugin/compare/dep=
+endency-check-jenkins-plugin-1.2.8...master" class=3D"external-link" rel=3D=
+"nofollow">Since Latest Release</a> </td>
+</tr>
+<tr>
+<th class=3D'confluenceTh'> Latest Release <br class=3D"atl-forced-newline"=
+ /> Latest Release Date <br class=3D"atl-forced-newline" /> Required Core <=
+br class=3D"atl-forced-newline" /> Dependencies </th>
+<td class=3D'confluenceTd'> <a href=3D"http://updates.jenkins-ci.org/latest=
+/dependency-check-jenkins-plugin.hpi" class=3D"external-link" rel=3D"nofoll=
+ow">1.2.8</a> <a href=3D"http://updates.jenkins-ci.org/download/plugins/dep=
+endency-check-jenkins-plugin/" class=3D"external-link" rel=3D"nofollow">(ar=
+chives)</a> <br class=3D"atl-forced-newline" /> Dec 28, 2014 <br class=3D"a=
+tl-forced-newline" /> <a href=3D"http://updates.jenkins-ci.org/download/war=
+/1.532/jenkins.war" class=3D"external-link" rel=3D"nofollow">1.532</a> <br =
+class=3D"atl-forced-newline" /> <a href=3D"https://wiki.jenkins-ci.org/disp=
+lay/JENKINS/Static+Code+Analysis+Plug-ins" class=3D"external-link" rel=3D"n=
+ofollow">analysis-core</a> (version:1.65) <br class=3D"atl-forced-newline" =
+/> <a href=3D"https://wiki.jenkins-ci.org/display/JENKINS/Maven+Project+Plu=
+gin" class=3D"external-link" rel=3D"nofollow">maven-plugin</a> (version:1.5=
+32) </td>
+<th class=3D'confluenceTh'> Source Code <br class=3D"atl-forced-newline" />=
+ Issue Tracking <br class=3D"atl-forced-newline" /> Maintainer(s) </th>
+<td class=3D'confluenceTd'> <a href=3D"https://github.com/jenkinsci/depende=
+ncy-check-plugin" class=3D"external-link" rel=3D"nofollow">GitHub</a> <br c=
+lass=3D"atl-forced-newline" /> <a href=3D"http://issues.jenkins-ci.org/secu=
+re/IssueNavigator.jspa?mode=3Dhide&amp;reset=3Dtrue&amp;jqlQuery=3Dproject+=
+%3D+JENKINS+AND+status+in+%28Open%2C+%22In+Progress%22%2C+Reopened%29+AND+c=
+omponent+%3D+%27dependency-check-jenkins-plugin%27" class=3D"external-link"=
+ rel=3D"nofollow">Open Issues</a> <br class=3D"atl-forced-newline" /> <a hr=
+ef=3D"mailto:steve.springett@owasp.org" class=3D"external-link" rel=3D"nofo=
+llow">Steve Springett</a> (id: n/a) </td>
+</tr>
+<tr>
+<th class=3D'confluenceTh'> Usage </th>
+<td class=3D'confluenceTd'> <span class=3D"image-wrap" style=3D""><img src=
+=3D"http://chart.apis.google.com/chart?cht=3Dlc&amp;chxl=3D1:%7C02%7C03%7C0=
+4%7C05%7C06%7C07%7C08%7C09%7C10%7C11%7C12%7C01%7C2:%7CMonth&amp;chxp=3D2,50=
+&amp;chxr=3D0,0,504%7C1,0,12&amp;chxs=3D1,676767,12&amp;chxt=3Dy,x,x&amp;ch=
+s=3D300x225&amp;chds=3D0,504&amp;chd=3Dt:129,168,189,226,236,286,335,375,41=
+7,449,455,504&amp;chg=3D10,-1,0,0&amp;chls=3D4&amp;chco=3Dd24939&amp;chtt=
+=3Ddependency-check-jenkins-plugin+-+installations" style=3D"border: 0px so=
+lid black" /></span> </td>
+<th class=3D'confluenceTh'> Installations </th>
+<td class=3D'confluenceTd'> 2014-Feb 129<br/>
+2014-Mar 168<br/>
+2014-Apr 189<br/>
+2014-May 226<br/>
+2014-Jun 236<br/>
+2014-Jul 286<br/>
+2014-Aug 335<br/>
+2014-Sep 375<br/>
+2014-Oct 417<br/>
+2014-Nov 449<br/>
+2014-Dec 455<br/>
+2015-Jan 504<br/>
+<a href=3D"/display/JENKINS/Plugin+Installation+Statistics" title=3D"Plugin=
+ Installation Statistics"><img class=3D"emoticon" src=3D"/images/icons/emot=
+icons/help_16.gif" height=3D"16" width=3D"16" align=3D"absmiddle" alt=3D"" =
+border=3D"0"/></a></td>
+</tr>
+</tbody></table>
+</div>
+
+<p><a href=3D"https://jenkins.ci.cloudbees.com/job/plugins/job/dependency-c=
+heck-plugin/" class=3D"external-link" rel=3D"nofollow"><span class=3D"image=
+-wrap" style=3D""><img src=3D"https://jenkins.ci.cloudbees.com/buildStatus/=
+icon?job=3Dplugins/dependency-check-plugin" style=3D"border: 0px solid blac=
+k" /></span></a></p>
+
+<h1><a name=3D"OWASPDependency-CheckPlugin-Description"></a>Description</h1=
+>
+
+<p><a href=3D"https://www.owasp.org/index.php/OWASP_Dependency_Check" class=
+=3D"external-link" rel=3D"nofollow">Dependency-Check</a> is an open source =
+utility that identifies project dependencies and checks if there are any kn=
+own, publicly disclosed, vulnerabilities. This tool can be part of the solu=
+tion to the OWASP Top 10 2013: A9 - Using Components with Known Vulnerabili=
+ties. The purpose of Dependency-Check is to help notify developers and secu=
+rity professionals of the problem discussed by Jeff Williams and Arshan Dab=
+irsiaghi in their talk at AppSec DC 2012 titled =E2=80=9C<a href=3D"http://=
+www1.contrastsecurity.com/the-unfortunate-reality-of-insecure-libraries?&am=
+p;__hssc=3D92971330.1.1412763139545&amp;__hstc=3D92971330.5d71a97ce2c038f53=
+e4109bfd029b71e.1412763139545.1412763139545.1412763139545.1&amp;hsCtaTracki=
+ng=3D7bbb964b-eac1-454d-9d5b-cc1089659590%7C816e01cf-4d75-449a-8691-bd0c6f9=
+946a5" class=3D"external-link" rel=3D"nofollow"><em>The Unfortunate Reality=
+ of Insecure Libraries</em></a>=E2=80=9C.</p>
+
+<p>The Dependency-Check Jenkins Plugin features the ability to perform a de=
+pendency analysis build and later view results post build. The plugin is bu=
+ilt using <a href=3D"/display/JENKINS/Static+Code+Analysis+Plug-ins" title=
+=3D"Static Code Analysis Plug-ins">analysis-core</a> and features many of t=
+he same features that Jenkins static analysis plugins offer, including thre=
+sholds, charts and the ability to view vulnerability information should a d=
+ependency have one identified.</p>
+
+<h1><a name=3D"OWASPDependency-CheckPlugin-Usage"></a>Usage</h1>
+
+<p>Dependency-Check is the core engine that includes the evidence-based ide=
+ntification, analysis, and reporting of library information and associated =
+vulnerabilities. Dependency-Check includes a command line interface (CLI), =
+an Ant task, and Maven plugin. All three generate the same HTML and XML rep=
+orts. The Dependency-Check Jenkins Plugin relies on the XML report generate=
+d from the CLI, Ant task or Maven plugin. It's recommended to include a Dep=
+endency-Check scan as part of a build process, similar to how a Findbugs or=
+ PMD analysis is typically performed.</p>
+
+<p>The Dependency-Check Jenkins Plugin also includes everything necessary t=
+o execute an analysis outside of a build script by incorporating the Depend=
+ency-Check core engine and associated Jenkins build-step.</p>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-UseinSoftwareEngineering"></a>Us=
+e in Software Engineering</h3>
+
+<p>Dependency-Check builds can be run in a continuous integration or nightl=
+y basis to determine if there are new vulnerabilities discovered based on t=
+he addition of a new dependency, or the discovery of a new vulnerability in=
+ an existing dependency. This is highly desirable information for projects =
+in active development and for those being sustained.</p>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-UseforProactiveMonitoring"></a>U=
+se for Proactive Monitoring</h3>
+
+<p>Dependency-Check builds in Jenkins can be used outside of a software eng=
+ineering context by automatically scanning and analyzing third-party applic=
+ations where source code is not available. In this scenario, Jenkins behave=
+s like a glorified cron job with built-in reporting capabilities. An enterp=
+rise for example, could scan and analyze all third-party applications (comm=
+ercial or otherwise) for libraries containing publicly known vulnerabilitie=
+s and proactively address issues when they arise.</p>
+
+<h1><a name=3D"OWASPDependency-CheckPlugin-Screenshots"></a>Screenshots</h1=
+>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-TrendingChart"></a>Trending Char=
+t</h3>
+
+<p><span class=3D"image-wrap" style=3D""><img src=3D"/download/attachments/=
+69272092/chart.png?version=3D1&amp;modificationDate=3D1375467054000" style=
+=3D"border: 1px solid black" /></span></p>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-Categories%28byCWE%29"></a>Categ=
+ories (by CWE)</h3>
+
+<p><span class=3D"image-wrap" style=3D""><img src=3D"/download/attachments/=
+69272092/categories.png?version=3D1&amp;modificationDate=3D1375467054000" w=
+idth=3D"600" style=3D"border: 1px solid black" /></span></p>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-Types%28byCVE%29"></a>Types (by =
+CVE)</h3>
+
+<p><span class=3D"image-wrap" style=3D""><img src=3D"/download/attachments/=
+69272092/types.png?version=3D1&amp;modificationDate=3D1375467054000" width=
+=3D"600" style=3D"border: 1px solid black" /></span></p>
+
+<h3><a name=3D"OWASPDependency-CheckPlugin-AnalysisDetails"></a>Analysis De=
+tails</h3>
+
+<p><span class=3D"image-wrap" style=3D""><img src=3D"/download/attachments/=
+69272092/details.png?version=3D1&amp;modificationDate=3D1375467054000" widt=
+h=3D"600" style=3D"border: 1px solid black" /></span></p>
+
+
+
+<h1><a name=3D"OWASPDependency-CheckPlugin-VersionHistory"></a>Version Hist=
+ory</h1>
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.9%28March6%2C2015%29"=
+></a>Version 1.2.9 (March 6, 2015)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.9</li>
+=09<li>Added warning if the Maven Central or Nexus analyzer are disabled</l=
+i>
+=09<li>Added option to bypass Jenkins proxy configuration when downloading =
+NVD feed</li>
+=09<li>Updated analysis-core to v1.69</li>
+=09<li>Changed label names on tabs</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.8%28December28%2C2014=
+%29"></a>Version 1.2.8 (December 28, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.8</li>
+=09<li>Minor code cleanup</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.7.1%28December28%2C20=
+14%29"></a>Version 1.2.7.1 (December 28, 2014)</h4>
+
+<ul>
+=09<li>Reverted previous serialization changes</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.7%28December8%2C2014%=
+29"></a>Version 1.2.7 (December 8, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.7</li>
+=09<li>Optimized serialization required for slave execution</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.6%28November16%2C2014=
+%29"></a>Version 1.2.6 (November 16, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.6</li>
+=09<li>Updated analysis-core to v1.65</li>
+=09<li>Added support for Maven Central analyzer</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.5%28September16%2C201=
+4%29"></a>Version 1.2.5 (September 16, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.5</li>
+=09<li>Support for Ant-style patterns added to scan path configuration</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.4%28August5%2C2014%29=
+"></a>Version 1.2.4 (August 5, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.4</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.3.2%28July7%2C2014%29=
+"></a>Version 1.2.3.2 (July 7, 2014)</h4>
+
+<ul>
+=09<li>Refactored experimental Maven artifact analysis</li>
+=09<li>Fixed display issued on details tab that may display incorrect path<=
+/li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.3.1%28July1%2C2014%29=
+"></a>Version 1.2.3.1 (July 1, 2014)</h4>
+
+<ul>
+=09<li>Fixed UI defect that prevented plugin from being configured in some =
+circumstances</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.3%28June27%2C2014%29"=
+></a>Version 1.2.3 (June 27, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.3</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.2%28June23%2C2014%29"=
+></a>Version 1.2.2 (June 23, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.2</li>
+=09<li>Updated analysis-core to v1.57</li>
+=09<li>Added experimental support for Maven artifact analysis in Maven jobs=
+</li>
+=09<li>Added global configuration for analyzers and temporary directory</li=
+>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.1%28May10%2C2014%29">=
+</a>Version 1.2.1 (May 10, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.1</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.2.0%28April28%2C2014%29=
+"></a>Version 1.2.0 (April 28, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.2.0</li>
+=09<li>Fixed defect that could result in a circular dependency</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.4.1%28April15%2C2014%=
+29"></a>Version 1.1.4.1 (April 15, 2014)</h4>
+
+<ul>
+=09<li>1.1.4 did not release properly due to bug in Maven Release Plugin. T=
+his is a re-release of 1.1.4 using M-R-P v2.5</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.4%28March30%2C2014%29=
+"></a>Version 1.1.4 (March 30, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.1.4</li>
+=09<li>Updated analysis-core to v1.56</li>
+=09<li>Added URL support for suppression files</li>
+=09<li>Fixed bug that prevented workspace from being cleaned up due to H2 l=
+ock files in use</li>
+=09<li>Fixed defect in details view that prevented certain details from dis=
+playing if a CWE was not associated with a vulnerability</li>
+=09<li>Default filename for XML reports has changed</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.3%28March11%2C2014%29=
+"></a>Version 1.1.3 (March 11, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.1.3</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.2%28March3%2C2014%29"=
+></a>Version 1.1.2 (March 3, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.1.2</li>
+=09<li>Updated analysis-core to v1.55</li>
+=09<li>Added per-build configurable support for additional zip extensions</=
+li>
+=09<li>Added global Nexus analyzer proxy bypass setting</li>
+=09<li>Added global Mono path configuration</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.1.2%28February9%2C201=
+4%29"></a>Version 1.1.1.2 (February 9, 2014)</h4>
+
+<ul>
+=09<li>Added per job configurable option to skip Dependency-Check analysis =
+if job is triggered by an upstream change</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.1.1%28February8%2C201=
+4%29"></a>Version 1.1.1.1 (February 8, 2014)</h4>
+
+<ul>
+=09<li>Added per job configurable option to skip Dependency-Check analysis =
+if job is triggered by SCM change</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.1%28January30%2C2014%=
+29"></a>Version 1.1.1 (January 30, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.1.1</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.1.0%28January26%2C2014%=
+29"></a>Version 1.1.0 (January 26, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.1.0</li>
+=09<li>Changed license from GPLv3 to Apache 2.0</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.8%28January18%2C2014%=
+29"></a>Version 1.0.8 (January 18, 2014)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.8</li>
+=09<li>Added global configuration options for Nexus analyzer</li>
+=09<li>Removed restriction that confined data directory to workspace</li>
+=09<li>Support for shared data directory (per node)</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.7%28December3%2C2013%=
+29"></a>Version 1.0.7 (December 3, 2013)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.7</li>
+=09<li>Added support for suppression file in build step</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.6%28notpublished%29">=
+</a>Version 1.0.6 (not published)</h4>
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.5%28November16%2C2013=
+%29"></a>Version 1.0.5 (November 16, 2013)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.5</li>
+=09<li>Updated analysis-core to v1.54</li>
+=09<li>Added support for proxy authentication</li>
+=09<li>Fixed bug that allowed a build to pass if invalid scan path was spec=
+ified</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.4.1%28October31%2C201=
+3%29"></a>Version 1.0.4.1 (October 31, 2013)</h4>
+
+<ul>
+=09<li>Added ability to use mirrored NIST CPE/CVE data. Refer to <a href=3D=
+"https://github.com/stevespringett/nist-data-mirror" class=3D"external-link=
+" rel=3D"nofollow">nist-data-mirror</a> for a simple tool to mirror NIST da=
+ta</li>
+=09<li>Added partial proxy server support. The core currently supports host=
+name and port parameters</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.4%28October22%2C2013%=
+29"></a>Version 1.0.4 (October 22, 2013)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.4</li>
+=09<li>Added configurable option to enable verbose logging when using the b=
+uild step</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.3%28October14%2C2013%=
+29"></a>Version 1.0.3 (October 14, 2013)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.3</li>
+=09<li>Added configurable option to generate standalone HTML reports in out=
+put directory</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.2%28September4%2C2013=
+%29"></a>Version 1.0.2 (September 4, 2013)</h4>
+
+<ul>
+=09<li>Updated core to Dependency-Check v1.0.2</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.1.1%28August30%2C2013=
+%29"></a>Version 1.0.1.1 (August 30, 2013)</h4>
+
+<ul>
+=09<li>Removed unnecessary dependency that may cause classpath issues</li>
+</ul>
+
+
+<h4><a name=3D"OWASPDependency-CheckPlugin-Version1.0.1%28August2%2C2013%29=
+"></a>Version 1.0.1 (August 2, 2013)</h4>
+
+<ul>
+=09<li>Initial public release</li>
+</ul>
+
+
+<h1><a name=3D"OWASPDependency-CheckPlugin-Sponsors"></a>Sponsors</h1>
+
+<p>Development of OWASP Dependency-Check Jenkins Plugin is sponsored in par=
+t by <a href=3D"http://www.axway.com/" class=3D"external-link" rel=3D"nofol=
+low">Axway</a>.</p>
+    </div>
+        <div id=3D"commentsSection" class=3D"wiki-content pageSection">
+        <div style=3D"float: right;">
+            <a href=3D"https://wiki.jenkins-ci.org/users/viewnotifications.=
+action" class=3D"grey">Change Notification Preferences</a>
+        </div>
+        <a href=3D"https://wiki.jenkins-ci.org/display/JENKINS/OWASP+Depend=
+ency-Check+Plugin">View Online</a>
+        |
+        <a href=3D"https://wiki.jenkins-ci.org/pages/diffpagesbyversion.act=
+ion?pageId=3D69272092&revisedVersion=3D39&originalVersion=3D38">View Change=
+s</a>
+                |
+        <a href=3D"https://wiki.jenkins-ci.org/display/JENKINS/OWASP+Depend=
+ency-Check+Plugin?showComments=3Dtrue&amp;showCommentArea=3Dtrue#addcomment=
+">Add Comment</a>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

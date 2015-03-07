@@ -1,0 +1,549 @@
+Date: Fri, 6 Mar 2015 09:49:01 +0000 (UTC)
+From: Jenkins Wiki <noreply@jenkins-ci.org>
+To: kk@kohsuke.org
+Message-ID: <627621841.10045.1425635341441.JavaMail.wiki@eggplant.jenkins-ci.org>
+Subject: [confluence] Jenkins > Pretested Integration Plugin
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Precedence: bulk
+Auto-Submitted: auto-generated
+
+<html>
+<head>
+    <base href="https://wiki.jenkins-ci.org">
+            <link rel="stylesheet" href="/s/2037/5/1/_/styles/combined.css?spaceKey=JENKINS&amp;forWysiwyg=true" type="text/css">
+    </head>
+<body style="background: white;" bgcolor="white" class="email-body">
+<div id="pageContent">
+<div id="notificationFormat">
+<div class="wiki-content">
+<div class="email">
+    <h2><a href="https://wiki.jenkins-ci.org/display/JENKINS/Pretested+Integration+Plugin">Pretested Integration Plugin</a></h2>
+    <h4>Page <b>edited</b> by             <a href="https://wiki.jenkins-ci.org/display/~bue">Bue Petersen</a>
+    </h4>
+        <br/>
+                         <h4>Changes (2)</h4>
+
+
+<div id="page-diffs">
+                    <table class="diff" cellpadding="0" cellspacing="0">
+
+            <tr><td class="diff-snipped" >...<br></td></tr>
+            <tr><td class="diff-unchanged" >h2. {color:#d24939}{*}Changes{*}{color} <br> <br></td></tr>
+            <tr><td class="diff-added-lines" style="background-color: #dfd;">h5. Version 2.2.1 <br></td></tr>
+            <tr><td class="diff-unchanged" > <br></td></tr>
+            <tr><td class="diff-added-lines" style="background-color: #dfd;">* [26568@issue] New accumulated commit message. Almost identical to what you get from squash commit, thus it have much more traceability by including the commit messages from all included commits. <br> <br></td></tr>
+            <tr><td class="diff-unchanged" >h5. Version 2.2.0 <br> <br></td></tr>
+            <tr><td class="diff-snipped" >...<br></td></tr>
+
+            </table>
+    </div>                            <h4>Full Content</h4>
+                    <div class="notificationGreySide">
+        <table class="sectionMacro" border="0" cellpadding="5" cellspacing="0" width="100%"><tbody><tr>
+<td class="confluenceTd" valign="top">
+<h4><a name="PretestedIntegrationPlugin-PluginInformation"></a>Plugin Information</h4>
+<div class='table-wrap'>
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> Plugin ID </th>
+<td class='confluenceTd'> pretested-integration </td>
+<th class='confluenceTh'> Changes </th>
+<td class='confluenceTd'> <a href="https://github.com/jenkinsci/pretested-integration-plugin/compare/pretested-integration-2.1.2...pretested-integration-2.2.0" class="external-link" rel="nofollow">In Latest Release</a><br/>
+<a href="https://github.com/jenkinsci/pretested-integration-plugin/compare/pretested-integration-2.2.0...master" class="external-link" rel="nofollow">Since Latest Release</a> </td>
+</tr>
+<tr>
+<th class='confluenceTh'> Latest Release <br class="atl-forced-newline" /> Latest Release Date <br class="atl-forced-newline" /> Required Core <br class="atl-forced-newline" /> Dependencies </th>
+<td class='confluenceTd'> <a href="http://updates.jenkins-ci.org/latest/pretested-integration.hpi" class="external-link" rel="nofollow">2.2.0</a> <a href="http://updates.jenkins-ci.org/download/plugins/pretested-integration/" class="external-link" rel="nofollow">(archives)</a> <br class="atl-forced-newline" /> Dec 16, 2014 <br class="atl-forced-newline" /> <a href="http://updates.jenkins-ci.org/download/war/1.532.1/jenkins.war" class="external-link" rel="nofollow">1.532.1</a> <br class="atl-forced-newline" /> <a href="https://wiki.jenkins-ci.org/display/JENKINS/Multiple+SCMs+Plugin" class="external-link" rel="nofollow">multiple-scms</a> (version:0.3, optional) <br class="atl-forced-newline" /> <a href="https://wiki.jenkins-ci.org/display/JENKINS/Git+Plugin" class="external-link" rel="nofollow">git</a> (version:2.2.0) </td>
+<th class='confluenceTh'> Source Code <br class="atl-forced-newline" /> Issue Tracking <br class="atl-forced-newline" /> Maintainer(s) </th>
+<td class='confluenceTd'> <a href="https://github.com/jenkinsci/pretested-integration-plugin" class="external-link" rel="nofollow">GitHub</a> <br class="atl-forced-newline" /> <a href="http://issues.jenkins-ci.org/secure/IssueNavigator.jspa?mode=hide&amp;reset=true&amp;jqlQuery=project+%3D+JENKINS+AND+status+in+%28Open%2C+%22In+Progress%22%2C+Reopened%29+AND+component+%3D+%27pretested-integration-plugin%27" class="external-link" rel="nofollow">Open Issues</a> <br class="atl-forced-newline" /> <a href="mailto:josra@praqma.net" class="external-link" rel="nofollow">Praqma Josra</a> (id: praqma_josra) </td>
+</tr>
+<tr>
+<th class='confluenceTh'> Usage </th>
+<td class='confluenceTd'> <span class="image-wrap" style=""><img src="http://chart.apis.google.com/chart?cht=lc&amp;chxl=1:%7C02%7C03%7C04%7C05%7C06%7C07%7C08%7C09%7C10%7C11%7C12%7C01%7C2:%7CMonth&amp;chxp=2,50&amp;chxr=0,0,38%7C1,0,12&amp;chxs=1,676767,12&amp;chxt=y,x,x&amp;chs=300x225&amp;chds=0,38&amp;chd=t:10,10,16,18,19,19,21,26,26,32,34,38&amp;chg=10,-1,0,0&amp;chls=4&amp;chco=d24939&amp;chtt=pretested-integration+-+installations" style="border: 0px solid black" /></span> </td>
+<th class='confluenceTh'> Installations </th>
+<td class='confluenceTd'> 2014-Feb 10<br/>
+2014-Mar 10<br/>
+2014-Apr 16<br/>
+2014-May 18<br/>
+2014-Jun 19<br/>
+2014-Jul 19<br/>
+2014-Aug 21<br/>
+2014-Sep 26<br/>
+2014-Oct 26<br/>
+2014-Nov 32<br/>
+2014-Dec 34<br/>
+2015-Jan 38<br/>
+<a href="/display/JENKINS/Plugin+Installation+Statistics" title="Plugin Installation Statistics"><img class="emoticon" src="/images/icons/emoticons/help_16.gif" height="16" width="16" align="absmiddle" alt="" border="0"/></a></td>
+</tr>
+</tbody></table>
+</div>
+</td>
+<td class="confluenceTd" valign="top">
+
+<h4><a name="PretestedIntegrationPlugin-Developedby"></a>Developed by</h4>
+
+<p><span class="image-wrap" style=""><img src="/download/attachments/67568254/praqmalogo.png?version=1&amp;modificationDate=1403599371000" style="border: 0px solid black" /></span></p>
+
+<h4><a name="PretestedIntegrationPlugin-Sponsoredby"></a>Sponsored by</h4>
+
+<p><span class="image-wrap" style=""><img src="/download/attachments/67568254/atmel.png?version=1&amp;modificationDate=1403600011000" style="border: 0px solid black" /></span></p></td></tr></tbody></table>
+
+<div>
+<ul>
+    <li><a href='#PretestedIntegrationPlugin-Introduction'>Introduction</a></li>
+    <li><a href='#PretestedIntegrationPlugin-References'>References</a></li>
+    <li><a href='#PretestedIntegrationPlugin-Supportandcontact'>Support and contact</a></li>
+    <li><a href='#PretestedIntegrationPlugin-Therecommendsetupandgitworkflow'>The recommend setup and git workflow</a></li>
+<ul>
+    <li><a href='#PretestedIntegrationPlugin-Thesimplepluginconfiguration'>The simple plugin configuration</a></li>
+    <li><a href='#PretestedIntegrationPlugin-ThesimpleGitworkflow'>The simple Git workflow</a></li>
+</ul>
+    <li><a href='#PretestedIntegrationPlugin-Helpanderrormessages'>Help and error messages</a></li>
+<ul>
+    <li><a href='#PretestedIntegrationPlugin-Manualbuilding'>Manual building</a></li>
+</ul>
+    <li><a href='#PretestedIntegrationPlugin-Usingmultiplerepositoryconfigurations'>Using multiple repository configurations</a></li>
+<ul>
+    <li><a href='#PretestedIntegrationPlugin-Requirementsifusingmultiplerepositoryjobs'>Requirements if using multiple repository jobs</a></li>
+    <li><a href='#PretestedIntegrationPlugin-Examplewithmultiplegitrepositories'>Example with multiple git repositories</a></li>
+</ul>
+    <li><a href='#PretestedIntegrationPlugin-Acknowledgement'>Acknowledgement</a></li>
+    <li><a href='#PretestedIntegrationPlugin-Issues'>Issues</a></li>
+    <li><a href='#PretestedIntegrationPlugin-'> <span style="color: #D24939"><b>Changes</b></span></a></li>
+</ul></div>
+
+<h2><a name="PretestedIntegrationPlugin-Introduction"></a>Introduction</h2>
+
+<p>The Pretested Integration Plugin offers a branchy approach to pretested integration (also known as pre-tested commits), which upholds the invariant; that for a specific branch, known as the integration branch, all commits have been verified. <br class="atl-forced-newline" />
+This plugin is developed by Praqma and sponsored by Atmel - It's maintained in the scope of <a href="http://www.josra.org" class="external-link" rel="nofollow">Joint Open Source Roadmap Alliance</a>&nbsp;(JOSRA).</p>
+
+<p>The plugin rely on the SCM plugin to establish the workspace and then takes over to do the integration. Last the job make the decision whether to like and commit the result or hate and discard it.&nbsp;To get a comprehensive introduction to how the plugin relies on the SCM plugin please read&nbsp;the blog post at the JOSRA:&nbsp;<a href="http://www.josra.org/blog/2014/06/23/Pretested%2Bintegration%2Bplugin.html" class="external-link" rel="nofollow">Pretested Integration Plugin</a>.</p>
+
+
+<h2><a name="PretestedIntegrationPlugin-References"></a>References</h2>
+
+<ul>
+	<li>For more background information and a discussion on the different merge strategies available please read the blog post at the JOSRA:&nbsp;<a href="http://www.josra.org/blog/Pretested+integration+plugin.html" class="external-link" rel="nofollow">Pretested Integration Plugin</a>.</li>
+	<li>For a Paper on how to implement at complete flow of automated continuous delivery - including pretested integration read the white paper: <a href="http://www.praqma.com/resources/papers/git-flow" class="external-link" rel="nofollow">CoDe:U Git Flow - a Continuous Delivery Approach</a> (PDF) or blog post: <a href="http://www.josra.org/blog/An-automated-git-branching-strategy.html" class="external-link" rel="nofollow">An Automated Git Branching Flow</a></li>
+	<li>To follow the roadmap for this plugin see the <a href="https://trello.com/b/tOQL6crl/pretested-integration-plugin" class="external-link" rel="nofollow">Trello board</a>.</li>
+	<li>Developer oriented documentation is found in the <a href="https://github.com/Praqma/pretested-integration-plugin/blob/master/README.md" class="external-link" rel="nofollow">repository readme</a>.</li>
+</ul>
+
+
+<h2><a name="PretestedIntegrationPlugin-Supportandcontact"></a>Support and contact</h2>
+
+<p>Please send us an email on support@praqma.net if you have a request or question regarding the plugin.</p>
+
+<p>If you find an error or have feature requests, use the Jenkins issue tracker.</p>
+
+<p><em>Comments and discussions on this page might not always be noticed.</em></p>
+
+<h2><a name="PretestedIntegrationPlugin-Therecommendsetupandgitworkflow"></a>The recommend setup and git workflow</h2>
+
+<p>Here is a simple git workflow where you can work on a features branch, and when ready push to a <b>ready</b>&#45;branch.  The Pretested Integration plugin, if configured as described will then pick up your changes, merge them and verify them. If  verified they are integrated on the <b>integration</b> branch. The ready branch are automatically deleted if integration was successful.</p>
+
+
+<p>Recommendation:</p>
+<ul>
+	<li>Use one repository in your job configuration - <b>the integration repository</b>. Avoid using several repositories - model your dependencies in other (better) ways.</li>
+	<li>Use <b>master</b> as <b>integration</b> branch (destination).</li>
+	<li>Use <b>ready/</b>&#42;&#42; as specifier for <b>ready</b> branches - only branches matching this expression will trigger the build</li>
+</ul>
+
+
+
+<h3><a name="PretestedIntegrationPlugin-Thesimplepluginconfiguration"></a>The simple plugin configuration</h3>
+
+<p>To configure the plugin to pick up <b>ready</b> branches, verify them and deliver them to the <b>integration</b> branch use the following configuration:</p>
+<div class='table-wrap'>
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'> <span class="image-wrap" style=""><img src="/download/attachments/67568254/simple-configuration-example_pic1.png?version=1&amp;modificationDate=1418681684000" height="419" width="1066" style="border: 1px solid black" /></span><br class="atl-forced-newline" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Configure the SCM as above. <br class="atl-forced-newline" />
+<ul>
+	<li>Recommend <b>ready</b> branch specifier is the 'Branch Speciifier' : ready/*&#42;</li>
+	<li>Remember to add <b>the two additional behaviours to ensure a clean work space and that old deleted branches are cleaned</b></li>
+	<li>It is recommended to name your repository in the 'Name' field.</li>
+</ul>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+
+<div class='table-wrap'>
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'> <span class="image-wrap" style=""><img src="/download/attachments/67568254/simple-configuration-example_pic2.png?version=1&amp;modificationDate=1418681971000" height="172" width="1076" style="border: 1px solid black" /></span><br class="atl-forced-newline" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Configure the Pretested Integration plugin with <b>integration</b> branch 'master' and the named repository 'origin'. <br class="atl-forced-newline" />
+There is a Pretested Integration plugin post-build step, which ensure verified changes are published. You don't have to configure it - it is automatically added. <br class="atl-forced-newline" /> </td>
+</tr>
+</tbody></table>
+</div>
+
+
+<p><b>Now you only need to configure your definition of done</b> &#45; the verification. How should the job verify the commits? It can be compile and measure compiler warning, build and run unit tests and check that coverage do not drop.</p>
+
+<h3><a name="PretestedIntegrationPlugin-ThesimpleGitworkflow"></a>The simple Git workflow</h3>
+
+<p><em>Get your repository up to date:</em></p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+git fetch --prune
+
+git checkout master
+
+git pull origin master
+
+</pre>
+</div></div>
+<p><em>Create a feature&#45; or development&#45; or... branch</em></p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+git checkout -b feat_1337-improved-login-screen
+</pre>
+</div></div>
+<p><em>...work, stage and commit changes.</em></p>
+
+<p><em>Then push changes to a</em> <b><em>ready</em></b> <em>branch, which is basically just a branch following a naming conventions for branches matching</em> <b><em>ready/</em></b><em>&#42;</em>&#42;<em>.</em></p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">
+git push origin feat_1337-improved-login-screen:ready/feat_1337-improved-login-screen
+</pre>
+</div></div>
+<p><em>The change will be picked up by the plugin if configured as shown in next section.</em></p>
+<ul>
+	<li>You can then delete your local branch and continue with a new feature or development branch.</li>
+	<li>You are free to push to any branch name not matching the ready branch naming convention without triggering an integration build.</li>
+</ul>
+
+
+<h2><a name="PretestedIntegrationPlugin-Helpanderrormessages"></a>Help and error messages</h2>
+
+<p>*<b>NOT YET DONE - work in progress</b>* (We have gathered some common errors and problems seen, together with some suggested solutions - <a href="/display/JENKINS/Help+and+error+messages" title="Help and error messages">Help and error messages</a>)</p>
+
+<h3><a name="PretestedIntegrationPlugin-Manualbuilding"></a>Manual building</h3>
+
+<p>In general you are not able to use 'Build now' with a pretested integration job configuration. The Pretested Integration Plugin is first in action when a "workspace" is handed over from the Git Plugin (or Multiple SCMs Plugin), and typically those will serve the last build revision again. If that succeeded last time, the revision is deleted after the integration and retrying the integration fails.</p>
+
+<p>Some successful and failing cases using manual builds are:</p>
+
+<ul>
+	<li>If last build failed, thus the integration failed, for a non-persistent error (slave problem, licensing problem ...) rebuilding the job can succeed if no other build have been executed since last time.</li>
+	<li>Rebuilding after a successful build will typically fail, if the build is rebuilding the same revision again. That revision doesn't not exist as it is deleted after a successful integration in last build.</li>
+	<li>If you have done a job configuration change, and need to trigger the job to test the configuration you typically need to make a commit that triggers the job. Push a commit to a ready branch, or wait for one.</li>
+	<li>There is a work around, that often enables you to build manually: Make the job parametrized with BRANCH_TO_BUILD and use that variable in the 'branch specifier'. Make BRANCH_TO_BUILD have the default ready-branch specifier, so if not given the job works as if there were no parameters. If you now build the job manually, you can type in a branch to build.</li>
+</ul>
+
+
+<p>You are welcome to contribute with ideas and use-cases for manual build and support for it on the roadmap in the <a href="https://trello.com/b/tOQL6crl/pretested-integration-plugin" class="external-link" rel="nofollow">Trello board</a>.</p>
+
+<h2><a name="PretestedIntegrationPlugin-Usingmultiplerepositoryconfigurations"></a>Using multiple repository configurations</h2>
+
+<p>The plugin is designed to work on only one repository - <b>as in you can only integrate on one repository pr. Jenkins job</b>, but your Jenkins job can be used with multiple repositories for eg. checking out several repositories into a given folder structure you need for building the software. Though we consider this a work-around for not having the right dependency management, it can be done. You have the choice of using the Git Plugin or the Multiple SCMs Plugin, but need to follow the configuration examples below.</p>
+
+<h3><a name="PretestedIntegrationPlugin-Requirementsifusingmultiplerepositoryjobs"></a>Requirements if using multiple repository jobs</h3>
+
+<p><b>Every repository should be explicitly and uniquely named</b>* in the git repository configuration under 'Advanced'. Then use this as integration repository in the prested integration configuration</p>
+
+<h3><a name="PretestedIntegrationPlugin-Examplewithmultiplegitrepositories"></a>Example with multiple git repositories</h3>
+
+<div class='table-wrap'>
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'>  <span class="image-wrap" style=""><img src="/download/attachments/67568254/multiple-named-git-scms.png?version=1&amp;modificationDate=1420639290000" width="500" style="border: 1px solid black" /></span>  <span class="image-wrap" style=""><img src="/download/attachments/67568254/pretested-configuration-integrate-to-named-repo.png?version=1&amp;modificationDate=1420639952000" width="400" style="border: 1px solid black" /></span>  </td>
+</tr>
+<tr>
+<td class='confluenceTd'><ul>
+	<li>The two repositories 'capital-letters' and 'numbers' are checked out to the same workspace.</li>
+	<li>'numbers' are the repository that is being integrated, so the branch specifier will typically match that patter ('capital-letters' might just be needed for building)</li>
+	<li>The pretested integration configuration now explicitly states that the 'numbers' repository is the integration repository.</li>
+	<li>Also remember to add <b>the two additional behaviours to ensure a clean work space and that old deleted branches are cleaned</b></li>
+</ul>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+
+
+<p>Basically the same setup needs to be applied if using the Multiple SCMs plugin, but you can benefit from additional behaviours like checking each git repository out to a subdirectory if needed. <b>Still every git repository must be explicitly and uniquely named</b>.</p>
+
+
+<h2><a name="PretestedIntegrationPlugin-Acknowledgement"></a>Acknowledgement</h2>
+
+<h5><a name="PretestedIntegrationPlugin-CodecontributionswereinitiallymadebyComputerSciencestudents%26nbsp%3BatUniversityofCopenhagenaspartofastudyproject"></a>Code contributions were initially made by Computer Science students&nbsp;at University of Copenhagen as part of a study project</h5>
+
+<p>Ronni Elken Lindsgaard<br/>
+Alexander Winther Uldall<br/>
+Esben Skaarup<br/>
+Andreas Frisch</p>
+
+<h2><a name="PretestedIntegrationPlugin-Issues"></a>Issues</h2>
+
+<p>
+
+
+    <table cellspacing="0" class="grid" style="width: 85%">
+        <tr>
+            <th colspan="3" style="text-align: left; ">
+                <a rel="nofollow" href="http://issues.jenkins-ci.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+JENKINS+AND+status+in+%28Open%2C+&quot;In+Progress&quot;%2C+Reopened%29+AND+component+%3D+%27pretested-integration-plugin%27">Open  issues</a>&nbsp;(11&nbsp;issues)
+            </th>
+        </tr>
+        <tr>
+                            <th style="text-align: left; text-transform: capitalize;">Type</th>
+                            <th style="text-align: left; text-transform: capitalize;">Key</th>
+                            <th style="text-align: left; text-transform: capitalize;">Summary</th>
+                    </tr>
+
+                                            <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-26568"><img src="https://issues.jenkins-ci.org/images/icons/newfeature.gif" alt="New Feature" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-26568">JENKINS-26568</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-26568">Implement new accummulated merge strategy commit message (our case 12618)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowAlternate">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25872"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25872">JENKINS-25872</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25872">Plugin doesn&#39;t use account&#39;s identity (our case 12395)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25831"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25831">JENKINS-25831</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25831">Branch not found (our case 12373)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowAlternate">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25810"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25810">JENKINS-25810</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25810">Only show postbuild step for supported job types (our case 12369)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25805"><img src="https://issues.jenkins-ci.org/images/icons/newfeature.gif" alt="New Feature" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25805">JENKINS-25805</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25805">Support for maven projects type (our case 12361)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowAlternate">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25542"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25542">JENKINS-25542</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25542">Git SHA is not translated to branch and checked accordingly (our case 12284)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25512"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25512">JENKINS-25512</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25512">If two branchheads points to same commit, wrong branch might get deleted (our case 12269)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowAlternate">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25069"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25069">JENKINS-25069</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-25069">Plugin does not work with stash-git-hook (our case 12132)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24909"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24909">JENKINS-24909</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24909">Source branch not checked against &quot;Branch Specifier&quot; ( our case 12075)</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowAlternate">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24907"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24907">JENKINS-24907</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-24907">HTML formatting in build description ( our case 12074 )</a>
+                                    </td>
+                            </tr>
+                                    <tr class="rowNormal">
+                                                            <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-23901"><img src="https://issues.jenkins-ci.org/images/icons/bug.gif" alt="Bug" border="0" /></a>
+                                    </td>
+                                <td nowrap="true">
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-23901">JENKINS-23901</a>
+                                    </td>
+                                <td >
+
+                                            <a href="https://issues.jenkins-ci.org/browse/JENKINS-23901">Job SCM changes are not valid after running plugin (our case 11771)</a>
+                                    </td>
+                            </tr>
+            </table>
+</p>
+
+
+<h2><a name="PretestedIntegrationPlugin-"></a><font color="#d24939"><b>Changes</b></font></h2>
+
+<h5><a name="PretestedIntegrationPlugin-Version2.2.1"></a>Version 2.2.1</h5>
+
+<ul>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-26568">issue #26568</a> New accumulated commit message. Almost identical to what you get from squash commit, thus it have much more traceability by including the commit messages from all included commits.</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version2.2.0"></a>Version 2.2.0</h5>
+
+<ul>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25445">issue #25445</a> Support for checkout to subdirectories.</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-24754">issue #24754</a>, <a href="http://issues.jenkins-ci.org/browse/JENKINS-25544">issue #25544</a>, <a href="http://issues.jenkins-ci.org/browse/JENKINS-25546">issue #25546</a> Support for using the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Multiple+SCMs+Plugin" class="external-link" rel="nofollow">Multiple SCMs Plugin</a>.</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25886">issue #25886</a> Requiring explicitly named remotes if using Multiple SCMs Plugin</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25960">issue #25960</a> Fixed problem with resolving correct git scm and remotes, if using Multiple SCMs Plugin</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25959">issue #25959</a> Post-build step, publish the changes to remote, is blocked if trying to delete 'master'-branch (using it as ready-branch)</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25618">issue #25618</a> Changed squashed merge strategy commit message, to include all the squashed commits individual messages.</li>
+	<li><a href="http://issues.jenkins-ci.org/browse/JENKINS-25873">issue #25873</a> Changed to using custom version number for this plugin, by adding git SHAs</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version2.1.2%3A"></a>Version 2.1.2:</h5>
+
+<ul>
+	<li>Implemented logging tracing</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version2.1.1%3A"></a>Version 2.1.1:</h5>
+
+<ul>
+	<li>Bugfix for running on slaves (<a href="http://issues.jenkins-ci.org/browse/JENKINS-24844">issue #24844</a>)</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version2.1.0%3A"></a>Version 2.1.0:</h5>
+
+<ul>
+	<li>Protected master branch (Plugin tries to delete origin/master <a href="http://issues.jenkins-ci.org/browse/JENKINS-24286">issue #24286</a>)</li>
+	<li>Re-using last commit message in accumulated strategy (Improve commit message <a href="http://issues.jenkins-ci.org/browse/JENKINS-24285">issue #24285</a>)</li>
+	<li>Removed the "origin" from the description (<a href="http://issues.jenkins-ci.org/browse/JENKINS-24284">issue #24284</a>)</li>
+	<li>When squashing commits, now using author from tip of branch (<a href="http://issues.jenkins-ci.org/browse/JENKINS-24443">issue #24443</a>)</li>
+	<li>Additional tests added as well</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version2.0%3A"></a>Version 2.0:</h5>
+
+<ul>
+	<li>Git integration is now supported</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-"></a><font color="#d24939"><b>Version 1.1:</b></font></h5>
+
+<ul>
+	<li>Dependency of Mercurial plugin set to 1.39 due to previous failure to trigger on merge commits</li>
+	<li>Removed UI elements that should not have been there</li>
+</ul>
+
+
+<h5><a name="PretestedIntegrationPlugin-Version1.0%3A"></a>Version 1.0:</h5>
+
+<ul>
+	<li>Release of the first stable versionI</li>
+</ul>
+
+    </div>
+        <div id="commentsSection" class="wiki-content pageSection">
+        <div style="float: right;">
+            <a href="https://wiki.jenkins-ci.org/users/viewnotifications.action" class="grey">Change Notification Preferences</a>
+        </div>
+        <a href="https://wiki.jenkins-ci.org/display/JENKINS/Pretested+Integration+Plugin">View Online</a>
+        |
+        <a href="https://wiki.jenkins-ci.org/pages/diffpagesbyversion.action?pageId=67568254&revisedVersion=85&originalVersion=84">View Changes</a>
+                |
+        <a href="https://wiki.jenkins-ci.org/display/JENKINS/Pretested+Integration+Plugin?showComments=true&amp;showCommentArea=true#addcomment">Add Comment</a>
+            </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
