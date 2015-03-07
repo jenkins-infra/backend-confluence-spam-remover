@@ -1,34 +1,29 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
 import hudson.plugins.jira.soap.ConfluenceSoapService;
-import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemotePage;
+import hudson.plugins.jira.soap.RemotePageSummary;
 import hudson.plugins.jira.soap.RemoteSearchResult;
 import hudson.plugins.jira.soap.RemoteSpaceSummary;
 import hudson.plugins.jira.soap.RemoteUserInformation;
-import org.jvnet.hudson.confluence.Confluence;
 
 import javax.xml.rpc.ServiceException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import java.rmi.RemoteException;
+import java.util.regex.Pattern;
 
 public class App {
-    private final ConfluenceSoapService service;
-    private final String token;
+    private final Connection con;
+
     /**
      * Key of Wiki space, like "JENKINS"
      */
@@ -50,14 +45,7 @@ public class App {
     }
 
     public App() throws IOException, ServiceException {
-        service = Confluence.connect(new URL("https://wiki.jenkins-ci.org/"));
-
-        Properties props = new Properties();
-        File credential = new File(new File(System.getProperty("user.home")), ".jenkins-ci.org");
-        if (!credential.exists())
-            throw new IOException("You need to have userName and password in "+credential);
-        props.load(new FileInputStream(credential));
-        token = service.login(props.getProperty("userName"), props.getProperty("password"));
+        con = new Connection();
     }
 
     /**
@@ -162,7 +150,7 @@ public class App {
         HashMap params = new HashMap();
         params.put("type","page");
         params.put("modified", "LASTWEEK");
-        for (RemoteSearchResult r : service.search(token, "", params, 1000)) {
+        for (RemoteSearchResult r : con.service.search(con.token, "", params, 1000)) {
             System.out.println(r.getTitle());
         }
     }
@@ -181,7 +169,7 @@ public class App {
         }
 
         public void delete() throws RemoteException {
-            service.removePage(token,page.getId());
+            con.service.removePage(con.token, page.getId());
         }
 
         public boolean isVeryLikelySpam() {
@@ -196,8 +184,8 @@ public class App {
      */
     public List<PossibleSpamPage> spellCheck() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : service.getPages(token, space)) {
-            RemotePage pg = service.getPage(token, p.getId());
+        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
+            RemotePage pg = con.service.getPage(con.token, p.getId());
 
             // we only care about recently updated pages
             if (olderThanDays(pg.getModified(),14))
@@ -206,7 +194,7 @@ public class App {
             float f = rateOf(pg);
 
             // page created by new users are more likely spam
-            RemoteUserInformation u = service.getUserInformation(token, pg.getModifier());
+            RemoteUserInformation u = con.service.getUserInformation(con.token, pg.getModifier());
             if (olderThanDays(u.getCreationDate(),14))
                 f += 10;
 
@@ -228,7 +216,7 @@ public class App {
      */
     public List<PossibleSpamPage> watchFreeVideo() throws RemoteException {
         List<PossibleSpamPage> r = new ArrayList<PossibleSpamPage>();
-        for (RemotePageSummary p : service.getPages(token, space)) {
+        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
             float f=0;
             for (String token : p.getTitle().split(" "))
                 if (FLAG_WORDS.contains(token.toLowerCase()))
@@ -236,10 +224,10 @@ public class App {
 
             if (f<10)   continue;
 
-            RemotePage pg = service.getPage(token, p.getId());
+            RemotePage pg = con.service.getPage(con.token, p.getId());
 
             // page created by new users are more likely spam
-            RemoteUserInformation u = service.getUserInformation(token, pg.getModifier());
+            RemoteUserInformation u = con.service.getUserInformation(con.token, pg.getModifier());
             if (!olderThanDays(u.getCreationDate(),14))
                 f += 10;
 
@@ -259,7 +247,7 @@ public class App {
     }
 
     private float rateOf(String title) throws RemoteException {
-        return rateOf(service.getPage(token, space, title));
+        return rateOf(con.service.getPage(con.token, space, title));
     }
 
     private float rateOf(RemotePage p) {
@@ -271,7 +259,7 @@ public class App {
 
     private void removeSpamPages() throws RemoteException {
         int cnt = 0;
-        for (RemotePageSummary p : service.getPages(token, space)) {
+        for (RemotePageSummary p : con.service.getPages(con.token, space)) {
             if (isForbidden(p.getTitle())) {
                 System.out.println(p.getTitle());
 //                service.removePage(token,p.getId());
