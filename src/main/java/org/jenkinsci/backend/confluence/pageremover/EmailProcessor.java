@@ -30,9 +30,11 @@ public class EmailProcessor {
             RemotePage p = new Connection().getPage("JENKINS", n.pageTitle);
             Language lang = new LanguageDetection().detect(p.getContent());
 
+            String body = String.format("Language detection: %s\nWiki: %s", lang, n);
+            System.err.println(body);
+
             Message reply = msg.reply(false);
             reply.setFrom(new InternetAddress("spambot@infradna.com"));
-            String body = String.format("Language detection: %s\nWiki: %s", lang, n);
             reply.setContent(body,"text/plain");
             Transport.send(reply);
         }
