@@ -1,10 +1,7 @@
-Backend tool: Confluence Spam Remover
+GUI Bulk Page Removal Tool
 =====================================
 
-From time to time we have mass spam attack on Jenkins Wiki, despite capture and use of
-[Stop forum spam API](http://www.stopforumspam.com/).
-
-This little GUI tool helps admins fight back by bulk-delete pages. Since every attack
+This little GUI tool helps admins fight back by bulk-deleting pages. Since every attack
 is somewhat different, it is almost always necessary to modify the tool to detect
 the current attack wave before you use this tool.
 
@@ -18,10 +15,3 @@ This tool works in the following sequence:
    Check/uncheck boxes manually so that only the actual spam pages are checked.
 1. Click "Clean" button to delete all the checked pages.
    (Pages go to the "trash" area, so an incorrectly deleted page can still be resurrected.)
-
-Also see [this INFRA wiki page](https://wiki.jenkins-ci.org/display/infra/Ban+user+spamming+Wiki) for how to fight back.
-
-TODO
-====
-* When deleting pages, delete all the other pages and comments created by this user and delete them.
-* Similarly, delete this user from LDAP
