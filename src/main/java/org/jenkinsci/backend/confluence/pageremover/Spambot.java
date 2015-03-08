@@ -69,20 +69,23 @@ public class Spambot {
      */
     private void removePage(MimeMessage reply) throws Exception {
         String content = getContent(reply);
-        if (content.contains("\nKILL SPAM\n")) {
-            // instruction to remove
-            String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
-            System.err.println("Removing "+pageTitle);
-            try {
-                Connection con = new Connection();
-                RemotePage pg = con.getPage("JENKINS", pageTitle);
-                con.removePage(pg.getId());
+        for (String line : content.split("\n")) {
+            if (line.equals("KILL SPAM")) {
+                // instruction to remove
+                String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
+                System.err.println("Removing "+pageTitle);
+                try {
+                    Connection con = new Connection();
+                    RemotePage pg = con.getPage("JENKINS", pageTitle);
+                    con.removePage(pg.getId());
 
-                Transport.send(createResponse(reply,
-                        String.format("Removed page: %s\n", pageTitle)));
-            } catch (Exception e) {
-                Transport.send(createResponse(reply,
-                        String.format("Failed to delete page: %s\n%s", pageTitle, print(e))));
+                    Transport.send(createResponse(reply,
+                            String.format("Removed page: %s\n", pageTitle)));
+                } catch (Exception e) {
+                    Transport.send(createResponse(reply,
+                            String.format("Failed to delete page: %s\n%s", pageTitle, print(e))));
+                }
+                return;
             }
         }
     }
