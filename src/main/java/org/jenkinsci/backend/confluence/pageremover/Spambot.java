@@ -9,6 +9,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -66,10 +68,11 @@ public class Spambot {
      * If a human replies to a notification email, take action.
      */
     private void removePage(MimeMessage reply) throws Exception {
-        String content = reply.getContent().toString();
+        String content = getContent(reply);
         if (content.contains("\nKILL SPAM\n")) {
             // instruction to remove
             String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
+            System.err.println("Removing "+pageTitle);
             try {
                 Connection con = new Connection();
                 RemotePage pg = con.getPage("JENKINS", pageTitle);
@@ -82,6 +85,14 @@ public class Spambot {
                         String.format("Failed to delete page: %s\n%s", pageTitle, print(e))));
             }
         }
+    }
+
+    private String getContent(MimeMessage reply) throws IOException, MessagingException {
+        Object c = reply.getContent();
+        if (c instanceof MimeMultipart) {
+            c = ((MimeMultipart) c).getBodyPart(0).getContent();
+        }
+        return c.toString();
     }
 
     /**
