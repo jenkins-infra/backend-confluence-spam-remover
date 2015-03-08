@@ -54,13 +54,19 @@ public class Spambot {
         System.err.println("Parsed "+n);
 
         if (n.action.equals("added")) {
-            RemotePage p = new Connection().getPage("JENKINS", n.pageTitle);
+            Connection con = new Connection();
+            RemotePage p = con.getPage("JENKINS", n.pageTitle);
             Language lang = new LanguageDetection().detect(p.getContent());
 
-            String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
-            System.err.println(body);
+            if (lang.lang.equals("id") && lang.prob>0.99) {
+                // highly confident that this is a spam. go ahead and remove it
+                removePage(msg,con,p);
+            } else {
+                String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
+                System.err.println(body);
 
-            Transport.send(createResponse(msg, body));
+                Transport.send(createResponse(msg, body));
+            }
         }
     }
 
@@ -74,19 +80,23 @@ public class Spambot {
                 // instruction to remove
                 String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
                 System.err.println("Removing "+pageTitle);
-                try {
-                    Connection con = new Connection();
-                    RemotePage pg = con.getPage("JENKINS", pageTitle);
-                    con.removePage(pg.getId());
-
-                    Transport.send(createResponse(reply,
-                            String.format("Removed page: %s\n", pageTitle)));
-                } catch (Exception e) {
-                    Transport.send(createResponse(reply,
-                            String.format("Failed to delete page: %s\n%s", pageTitle, print(e))));
-                }
+                Connection con = new Connection();
+                RemotePage pg = con.getPage("JENKINS", pageTitle);
+                removePage(reply, con, pg);
                 return;
             }
+        }
+    }
+
+    private void removePage(MimeMessage current, Connection con, RemotePage pg) throws MessagingException {
+        try {
+            con.removePage(pg.getId());
+
+            Transport.send(createResponse(current,
+                    String.format("Removed page: %s\n", pg.getTitle())));
+        } catch (Exception e) {
+            Transport.send(createResponse(current,
+                    String.format("Failed to delete page: %s\n%s", pg.getTitle(), print(e))));
         }
     }
 
