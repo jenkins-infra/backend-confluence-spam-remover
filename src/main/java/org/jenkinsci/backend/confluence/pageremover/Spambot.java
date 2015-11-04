@@ -60,13 +60,18 @@ public class Spambot {
 
             if (lang.lang.equals("id") && lang.prob>0.99) {
                 // highly confident that this is a spam. go ahead and remove it
-                removePage(msg,con,p);
-            } else {
-                String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
-                System.err.println(body);
-
-                Transport.send(createResponse(msg, body));
+                removePage(msg, con, p);
+                return;
             }
+            if (BLACKLIST.matches(p.getContent())) {
+                removePage(msg, con, p);
+                return;
+            }
+
+            String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
+            System.err.println(body);
+
+            Transport.send(createResponse(msg, body));
         }
     }
 
@@ -128,4 +133,14 @@ public class Spambot {
     }
 
     private static final String REPLY_SUBJECT_PREFIX = "Re: [confluence] Jenkins > ";
+
+    private static final WordList BLACKLIST = new WordList();
+
+    static {
+        try {
+            BLACKLIST.load(Spambot.class.getClassLoader().getResource("blacklis.wl"));
+        } catch (IOException e) {
+            throw new Error(e);
+        }
+    }
 }
