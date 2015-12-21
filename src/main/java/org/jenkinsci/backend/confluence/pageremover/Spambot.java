@@ -138,7 +138,7 @@ public class Spambot {
 
     static {
         try {
-            BLACKLIST.load(Spambot.class.getClassLoader().getResource("blacklis.wl"));
+            BLACKLIST.load(Spambot.class.getClassLoader().getResource("blacklist.wl"));
         } catch (IOException e) {
             throw new Error(e);
         }
