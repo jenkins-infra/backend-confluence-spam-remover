@@ -1,5 +1,6 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
+import com.cybozu.labs.langdetect.LangDetectException;
 import com.cybozu.labs.langdetect.Language;
 import hudson.plugins.jira.soap.RemotePage;
 import org.jenkinsci.backend.ldap.AccountServer;
@@ -13,7 +14,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,14 +61,20 @@ public class Spambot {
         if (n.action.equals("added")) {
             Connection con = new Connection();
             RemotePage p = con.getPage("JENKINS", n.pageTitle);
-            Language lang = new LanguageDetection().detect(p.getContent());
-
-            if (lang.lang.equals("id") && lang.prob>0.99) {
-                // highly confident that this is a spam. go ahead and remove it
-                removePage(msg, con, p);
-                banAccount(n.authorID);
-                return;
+            Language lang = null;
+            try {
+                lang = new LanguageDetection().detect(p.getContent());
+                if (lang.lang.equals("id") && lang.prob>0.99) {
+                    // highly confident that this is a spam. go ahead and remove it
+                    removePage(msg, con, p);
+                    banAccount(n.authorID);
+                    return;
+                }
+            } catch (LangDetectException e) {
+                System.err.println("Failed to detect language");
+                e.printStackTrace();
             }
+
             if (BLACKLIST.matches(p.getContent()) || BLACKLIST.matches(p.getTitle())) {
                 removePage(msg, con, p);
                 banAccount(n.authorID);
