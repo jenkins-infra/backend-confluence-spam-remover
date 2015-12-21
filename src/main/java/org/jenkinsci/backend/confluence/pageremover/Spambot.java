@@ -63,7 +63,7 @@ public class Spambot {
                 removePage(msg, con, p);
                 return;
             }
-            if (BLACKLIST.matches(p.getContent())) {
+            if (BLACKLIST.matches(p.getContent()) || BLACKLIST.matches(p.getTitle())) {
                 removePage(msg, con, p);
                 return;
             }
