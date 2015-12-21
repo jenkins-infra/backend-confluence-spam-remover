@@ -68,7 +68,7 @@ public class Spambot {
                 return;
             }
 
-            String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
+            String body = String.format("Keeping this page\n\nLanguage detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
             System.err.println(body);
 
             Transport.send(createResponse(msg, body));
