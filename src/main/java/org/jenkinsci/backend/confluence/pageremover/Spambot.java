@@ -2,6 +2,9 @@ package org.jenkinsci.backend.confluence.pageremover;
 
 import com.cybozu.labs.langdetect.Language;
 import hudson.plugins.jira.soap.RemotePage;
+import org.jenkinsci.backend.ldap.AccountServer;
+import org.jenkinsci.backend.ldap.Config;
+import org.kohsuke.stapler.config.ConfigurationLoader;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -10,6 +13,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.naming.NamingException;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -61,10 +66,12 @@ public class Spambot {
             if (lang.lang.equals("id") && lang.prob>0.99) {
                 // highly confident that this is a spam. go ahead and remove it
                 removePage(msg, con, p);
+                banAccount(n.authorID);
                 return;
             }
             if (BLACKLIST.matches(p.getContent()) || BLACKLIST.matches(p.getTitle())) {
                 removePage(msg, con, p);
+                banAccount(n.authorID);
                 return;
             }
 
@@ -72,6 +79,20 @@ public class Spambot {
             System.err.println(body);
 
             Transport.send(createResponse(msg, body));
+        }
+    }
+
+    /**
+     * Ban the user.
+     */
+    private void banAccount(String id) {
+        try {
+            AccountServer app = new AccountServer(ConfigurationLoader.from(new File("./config.properties")).as(Config.class));
+            app.delete(id);
+            System.err.println("Successfully deleted account "+id);
+        } catch (Exception e) {
+            System.err.println("Failed to delete account "+id);
+            e.printStackTrace();
         }
     }
 
