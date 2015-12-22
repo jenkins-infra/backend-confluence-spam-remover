@@ -31,7 +31,12 @@ public class Space {
             new Space("JA",         "[confluence] 日本語 > ")
     };
 
-    public static final Space find(MimeMessage msg) throws MessagingException {
+    /**
+     * Finds the space from a notification email.
+     *
+     * @return null if no space matches
+     */
+    public static Space find(MimeMessage msg) throws MessagingException {
         for (Space s : SPACES) {
             if (msg.getSubject().startsWith(s.subjectPrefix)
             ||  msg.getSubject().startsWith(s.replySubjectPrefix))
