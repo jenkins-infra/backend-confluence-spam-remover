@@ -37,7 +37,7 @@ public class Spambot {
         // we get email in stdin
         MimeMessage msg = new MimeMessage(Session.getDefaultInstance(System.getProperties()), System.in);
 
-        if (msg.getSubject().startsWith(REPLY_SUBJECT_PREFIX)) {
+        if (msg.getSubject().startsWith("Re: ")) {
             removePage(msg);
             return 0;
         }
@@ -60,7 +60,7 @@ public class Spambot {
 
         if (n.action.equals("added")) {
             Connection con = new Connection();
-            RemotePage p = con.getPage("JENKINS", n.pageTitle);
+            RemotePage p = con.getPage(n.spaceID, n.pageTitle);
             Language lang = null;
             try {
                 lang = new LanguageDetection().detect(p.getContent());
@@ -110,12 +110,15 @@ public class Spambot {
         for (String line : content.split("\n")) {
             if (line.equals("KILL SPAM")) {
                 // instruction to remove
-                String pageTitle = reply.getSubject().substring(REPLY_SUBJECT_PREFIX.length());
-                System.err.println("Removing "+pageTitle);
-                Connection con = new Connection();
-                RemotePage pg = con.getPage("JENKINS", pageTitle);
-                removePage(reply, con, pg);
-                return;
+                Space sp = Space.find(reply);
+                if (sp!=null) {
+                    String pageTitle = reply.getSubject().substring(sp.replySubjectPrefix.length());
+                    System.err.println("Removing " + pageTitle);
+                    Connection con = new Connection();
+                    RemotePage pg = con.getPage(sp.id, pageTitle);
+                    removePage(reply, con, pg);
+                    return;
+                }
             }
         }
     }
@@ -158,8 +161,6 @@ public class Spambot {
         reply.setContent(body,"text/plain");
         return reply;
     }
-
-    private static final String REPLY_SUBJECT_PREFIX = "Re: [confluence] Jenkins > ";
 
     private static final WordList BLACKLIST = new WordList();
 

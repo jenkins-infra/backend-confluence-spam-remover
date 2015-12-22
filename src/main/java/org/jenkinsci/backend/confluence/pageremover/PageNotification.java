@@ -29,10 +29,16 @@ public class PageNotification {
      */
     public final String authorID;
 
-    public PageNotification(String action, String pageTitle, String authorID) {
+    /**
+     * Space ID such as "JENKINS" or "JA"
+     */
+    public final String spaceID;
+
+    public PageNotification(String action, String pageTitle, String authorID, String spaceID) {
         this.action = action;
         this.pageTitle = pageTitle;
         this.authorID = authorID;
+        this.spaceID = spaceID;
     }
 
     @Override
@@ -41,6 +47,7 @@ public class PageNotification {
                 "action='" + action + '\'' +
                 ", pageTitle='" + pageTitle + '\'' +
                 ", authorID='" + authorID + '\'' +
+                ", spaceID='" + spaceID + '\'' +
                 '}';
     }
 
@@ -49,10 +56,11 @@ public class PageNotification {
      * If the email doesn't match, return null.
      */
     public static PageNotification parse(MimeMessage msg) throws MessagingException, IOException {
-        if (!msg.getSubject().startsWith(SUBJECT_HEADER))
+        Space sp=Space.find(msg);
+        if (sp==null)
             return null;
 
-        String pageTitle = msg.getSubject().substring(SUBJECT_HEADER.length());
+        String pageTitle = msg.getSubject().substring(sp.subjectPrefix.length());
 
         List<String> contents = Arrays.asList(msg.getContent().toString().split("\n"));
         if (contents.size()<10)     return null;    // too short to be real
@@ -78,14 +86,12 @@ public class PageNotification {
                 if (!m.find())              return null;    // expecting to find user ID
                 String userId = m.group(1);
 
-                return new PageNotification(action,pageTitle,userId);
+                return new PageNotification(action,pageTitle,userId,sp.id);
             }
         }
 
         return null;
     }
-
-    private static final String SUBJECT_HEADER = "[confluence] Jenkins > ";
 
     // find the action verb
     private static final Pattern ACTION_PATTERN = Pattern.compile("<b>([a-z]+)</b>");
