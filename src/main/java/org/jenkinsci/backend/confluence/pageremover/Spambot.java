@@ -3,6 +3,8 @@ package org.jenkinsci.backend.confluence.pageremover;
 import com.cybozu.labs.langdetect.LangDetectException;
 import com.cybozu.labs.langdetect.Language;
 import hudson.plugins.jira.soap.RemotePage;
+import hudson.plugins.jira.soap.RemoteUser;
+import hudson.plugins.jira.soap.RemoteUserInformation;
 import org.jenkinsci.backend.ldap.AccountServer;
 import org.jenkinsci.backend.ldap.Config;
 import org.kohsuke.stapler.config.ConfigurationLoader;
@@ -95,6 +97,8 @@ public class Spambot {
         try {
             AccountServer app = new AccountServer(ConfigurationLoader.from(new File("./config.properties")).as(Config.class));
             app.delete(id);
+            SessionKiller sessionKiller = new SessionKiller();
+            sessionKiller.kill(id);
             System.err.println("Successfully deleted account "+id);
         } catch (Exception e) {
             System.err.println("Failed to delete account "+id);
