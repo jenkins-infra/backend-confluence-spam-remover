@@ -47,6 +47,6 @@ public class WordList {
             if (longText.contains(word))
                 return true;
         }
-        return Pattern.compile("8(?:00|55|66|77|88)[ ~_\\-.=)]*\\d{3}[ ~_.\\-=]*\\d{4}").matcher(longText).matches();
+        return Pattern.compile("8(?:00|44|55|66|77|88)[ ~_\\-.=)]*\\d{3}[ ~_.\\-=]*\\d{4}").matcher(longText).matches();
     }
 }
