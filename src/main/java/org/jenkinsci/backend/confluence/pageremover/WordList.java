@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @author Kohsuke Kawaguchi
@@ -46,6 +47,6 @@ public class WordList {
             if (longText.contains(word))
                 return true;
         }
-        return false;
+        return Pattern.compile("8(?:00|55|66|77|88)[ ~_\\-.=)]*\\d{3}[ ~_.\\-=]*\\d{4}").matcher(longText).matches();
     }
 }
