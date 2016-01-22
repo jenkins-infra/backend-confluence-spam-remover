@@ -1,0 +1,3 @@
+space: JENKINS
+mailRecipient: jenkinsci-spambot@googlegroups.com
+smtpServer: localhost

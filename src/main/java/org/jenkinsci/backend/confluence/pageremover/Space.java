@@ -44,4 +44,18 @@ public class Space {
         }
         return null;
     }
+
+    /**
+     * Finds the space from a mail subject.
+     *
+     * @return null if no space matches
+     */
+    public static Space find(String subject) {
+        for (Space s : SPACES) {
+            if (subject.startsWith(s.subjectPrefix)
+                    ||  subject.startsWith(s.replySubjectPrefix))
+                return s;
+        }
+        return null;
+    }
 }

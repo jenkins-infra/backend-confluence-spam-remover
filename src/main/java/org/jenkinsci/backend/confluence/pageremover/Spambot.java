@@ -162,7 +162,7 @@ public class Spambot {
         return reply;
     }
 
-    private static final WordList BLACKLIST = new WordList();
+    public static final WordList BLACKLIST = new WordList();
 
     static {
         try {
