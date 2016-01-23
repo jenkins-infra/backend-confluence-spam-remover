@@ -22,6 +22,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.List;
+
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.jenkinsci.backend.confluence.pageremover.Spambot.BLACKLIST;
 
@@ -34,14 +36,19 @@ public class PageRemoverResource {
     private final String mailRecipient;
     private final String smtpServer;
     private final AccountServer accountServer;
+    private final List<String> languagesToBlock;
+    private final float blockingProbability;
 
 
     public PageRemoverResource(String space, String mailRecipient, String smtpServer,
-                               AccountServer accountServer) {
+                               AccountServer accountServer, List<String> languagesToBlock,
+                               float blockingProbability) {
         this.space = space;
         this.mailRecipient = mailRecipient;
         this.smtpServer = smtpServer;
         this.accountServer = accountServer;
+        this.languagesToBlock = languagesToBlock;
+        this.blockingProbability = blockingProbability;
     }
 
     @POST
@@ -77,11 +84,15 @@ public class PageRemoverResource {
             Language lang = null;
             try {
                 lang = new LanguageDetection().detect(p.getContent());
-                if (lang.lang.equals("id") && lang.prob>0.99) {
-                    // highly confident that this is a spam. go ahead and remove it
-                    removePage(con, p);
-                    banAccount(n.authorID);
-                    return;
+                if (lang.prob > blockingProbability) {
+                    if (languagesToBlock.contains(lang.lang)) {
+                        LOGGER.info("Page in blocked language " + lang.lang + " detected - removing and banning account");
+
+                        // highly confident that this is a spam. go ahead and remove it
+                        removePage(con, p);
+                        banAccount(n.authorID);
+                        return;
+                    }
                 }
             } catch (LangDetectException e) {
                 LOGGER.error("Failed to detect language", e);

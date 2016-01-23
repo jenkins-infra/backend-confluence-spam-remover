@@ -1,10 +1,18 @@
 space: JENKINS
 mailRecipient: jenkinsci-spambot@googlegroups.com
 smtpServer: localhost
-newUserBaseDN: something
-managerDN: something
-managerPassword: DEFINE LOCALLY
-ldapServer: cucumber.jenkins-ci.org
+
+ldapServer:
+  newUserBaseDN: something
+  managerDN: something
+  managerPassword: DEFINE LOCALLY
+  server: cucumber.jenkins-ci.org
+
+languageBlocking:
+  languages:
+    - id
+  probability: 0.99
+
 
 # Logging settings.
 logging:

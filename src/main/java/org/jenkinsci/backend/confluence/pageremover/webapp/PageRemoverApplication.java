@@ -1,12 +1,9 @@
 package org.jenkinsci.backend.confluence.pageremover.webapp;
 
-import com.google.common.collect.ImmutableMap;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.jenkinsci.backend.ldap.AccountServer;
-import org.jenkinsci.backend.ldap.Config;
-import org.kohsuke.stapler.config.ConfigurationLoader;
 
 import java.io.IOException;
 
@@ -27,18 +24,14 @@ public class PageRemoverApplication extends Application<PageRemoverConfiguration
 
     @Override
     public void run(PageRemoverConfiguration configuration, Environment environment) throws IOException {
-        final Config ldapConfig = ConfigurationLoader.from(ImmutableMap.of(
-                "newUserBaseDN", configuration.getNewUserBaseDN(),
-                "managerDN", configuration.getManagerDN(),
-                "managerPassword", configuration.getManagerPassword(),
-                "server", configuration.getLdapServer()
-        )).as(Config.class);
 
         final PageRemoverResource resource = new PageRemoverResource(
                 configuration.getSpace(),
                 configuration.getMailRecipient(),
                 configuration.getSmtpServer(),
-                new AccountServer(ldapConfig)
+                new AccountServer(configuration.getLdapServerConfiguration()),
+                configuration.getLanguageBlockingConfiguration().getLanguages(),
+                configuration.getLanguageBlockingConfiguration().getProbability()
         );
 
         environment.jersey().register(resource);
