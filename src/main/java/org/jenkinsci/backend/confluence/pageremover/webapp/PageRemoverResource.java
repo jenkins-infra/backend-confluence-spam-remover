@@ -1,19 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.jenkinsci.backend.confluence.pageremover.webapp;
 
 import com.cybozu.labs.langdetect.LangDetectException;
@@ -28,8 +12,8 @@ import org.jenkinsci.backend.confluence.pageremover.LanguageDetection;
 import org.jenkinsci.backend.confluence.pageremover.PageNotification;
 import org.jenkinsci.backend.confluence.pageremover.Space;
 import org.jenkinsci.backend.ldap.AccountServer;
-import org.jenkinsci.backend.ldap.Config;
-import org.kohsuke.stapler.config.ConfigurationLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -38,22 +22,26 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.io.File;
-
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.jenkinsci.backend.confluence.pageremover.Spambot.BLACKLIST;
 
 @Path("/page-remover")
 @Produces(MediaType.TEXT_PLAIN)
 public class PageRemoverResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PageRemoverResource.class);
+
     private final String space;
     private final String mailRecipient;
     private final String smtpServer;
+    private final AccountServer accountServer;
 
-    public PageRemoverResource(String space, String mailRecipient, String smtpServer) {
+
+    public PageRemoverResource(String space, String mailRecipient, String smtpServer,
+                               AccountServer accountServer) {
         this.space = space;
         this.mailRecipient = mailRecipient;
         this.smtpServer = smtpServer;
+        this.accountServer = accountServer;
     }
 
     @POST
@@ -72,7 +60,7 @@ public class PageRemoverResource {
             return Response.ok().build();
         }
 
-        System.err.println("Not a confluence notification email: " + subject.or("[empty subject]"));
+        LOGGER.warn("Not a confluence notification email: " + subject.or("[empty subject]"));
         return Response.ok().build();
 
     }
@@ -81,7 +69,7 @@ public class PageRemoverResource {
      * Processes notification email from Confluence, and take appropriate actions.
      */
     private void processNotification(PageNotification n) throws Exception {
-        System.err.println("Parsed "+n);
+        LOGGER.info("Parsed " + n);
 
         if (n.action.equals("added")) {
             Connection con = new Connection();
@@ -96,8 +84,7 @@ public class PageRemoverResource {
                     return;
                 }
             } catch (LangDetectException e) {
-                System.err.println("Failed to detect language");
-                e.printStackTrace();
+                LOGGER.error("Failed to detect language", e);
             }
 
             if (BLACKLIST.matches(p.getContent()) || BLACKLIST.matches(p.getTitle())) {
@@ -107,7 +94,7 @@ public class PageRemoverResource {
             }
 
             String body = String.format("Language detection: %s\nWiki: %s\n\n\nSee https://github.com/jenkinsci/backend-confluence-spam-remover about this bot", lang, n);
-            System.err.println(body);
+            LOGGER.info(body);
 
             sendResponse(String.format("Keeping page %s", p.getTitle()), body);
         }
@@ -118,12 +105,10 @@ public class PageRemoverResource {
      */
     private void banAccount(String id) {
         try {
-            AccountServer app = new AccountServer(ConfigurationLoader.from(new File("./config.properties")).as(Config.class));
-            app.delete(id);
-            System.err.println("Successfully deleted account "+id);
+            accountServer.delete(id);
+            LOGGER.info("Successfully deleted account "+id);
         } catch (Exception e) {
-            System.err.println("Failed to delete account "+id);
-            e.printStackTrace();
+            LOGGER.error("Failed to delete account " + id, e);
         }
     }
 
@@ -137,7 +122,7 @@ public class PageRemoverResource {
                 Space sp = Space.find(subject);
                 if (sp!=null) {
                     String pageTitle = subject.substring(sp.replySubjectPrefix.length());
-                    System.err.println("Removing " + pageTitle);
+                    LOGGER.info("Removing " + pageTitle);
                     Connection con = new Connection();
                     RemotePage pg = con.getPage(sp.id, pageTitle);
                     removePage(con, pg);

@@ -1,24 +1,14 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.jenkinsci.backend.confluence.pageremover.webapp;
 
+import com.google.common.collect.ImmutableMap;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.jenkinsci.backend.ldap.AccountServer;
+import org.jenkinsci.backend.ldap.Config;
+import org.kohsuke.stapler.config.ConfigurationLoader;
+
+import java.io.IOException;
 
 public class PageRemoverApplication extends Application<PageRemoverConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -36,12 +26,21 @@ public class PageRemoverApplication extends Application<PageRemoverConfiguration
     }
 
     @Override
-    public void run(PageRemoverConfiguration configuration, Environment environment) {
+    public void run(PageRemoverConfiguration configuration, Environment environment) throws IOException {
+        final Config ldapConfig = ConfigurationLoader.from(ImmutableMap.of(
+                "newUserBaseDN", configuration.getNewUserBaseDN(),
+                "managerDN", configuration.getManagerDN(),
+                "managerPassword", configuration.getManagerPassword(),
+                "server", configuration.getLdapServer()
+        )).as(Config.class);
+
         final PageRemoverResource resource = new PageRemoverResource(
                 configuration.getSpace(),
                 configuration.getMailRecipient(),
-                configuration.getSmtpServer()
+                configuration.getSmtpServer(),
+                new AccountServer(ldapConfig)
         );
+
         environment.jersey().register(resource);
     }
 }
