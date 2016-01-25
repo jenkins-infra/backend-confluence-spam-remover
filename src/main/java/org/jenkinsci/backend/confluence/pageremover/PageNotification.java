@@ -1,5 +1,7 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -17,28 +19,52 @@ public class PageNotification {
     /**
      * "added", "edited", etc.
      */
-    public final String action;
+    public String action;
 
     /**
      * Page title, such as "Pretested Integration Plugin"
      */
-    public final String pageTitle;
+    public String pageTitle;
 
     /**
      * Author ID of the page, such as "kohsuke" or "autojack"
      */
-    public final String authorID;
+    public String authorID;
 
     /**
      * Space ID such as "JENKINS" or "JA"
      */
-    public final String spaceID;
+    public String spaceID;
+
+    public PageNotification() {
+        // Jackson deserialization
+    }
 
     public PageNotification(String action, String pageTitle, String authorID, String spaceID) {
         this.action = action;
         this.pageTitle = pageTitle;
         this.authorID = authorID;
         this.spaceID = spaceID;
+    }
+
+    @JsonProperty
+    public String getSpaceID() {
+        return spaceID;
+    }
+
+    @JsonProperty
+    public String getAction() {
+        return action;
+    }
+
+    @JsonProperty
+    public String getPageTitle() {
+        return pageTitle;
+    }
+
+    @JsonProperty
+    public String getAuthorID() {
+        return authorID;
     }
 
     @Override
@@ -65,6 +91,35 @@ public class PageNotification {
         List<String> contents = Arrays.asList(msg.getContent().toString().split("\n"));
         if (contents.size()<10)     return null;    // too short to be real
 
+        return parseContents(pageTitle, sp.id, contents);
+    }
+
+    /**
+     * Parse the Mailgun notificaction as confluence notification.
+     * If it doesn't match, return null.
+     */
+    public static PageNotification parse(String subject, String body) {
+        Space sp=Space.find(subject);
+        if (sp==null)
+            return null;
+
+        String pageTitle = subject.substring(sp.subjectPrefix.length());
+
+        List<String> contents = Arrays.asList(body.toString().split("\n"));
+        if (contents.size()<10)     return null;    // too short to be real
+
+        return parseContents(pageTitle, sp.id, contents);
+    }
+
+    /**
+     * Actually reads the page title, space ID and contents and returns a PageNotification.
+     *
+     * @param pageTitle
+     * @param spaceId
+     * @param contents
+     * @return a PageNotification.
+     */
+    private static PageNotification parseContents(String pageTitle, String spaceId, List<String> contents) {
         /*
             The portion of the email body we are looking for is this:
 
@@ -73,6 +128,7 @@ public class PageNotification {
     <h4>Page  <b>added</b> by             <a href="https://wiki.jenkins-ci.org/display/~obatfarmasi">gilang kurniawan</a>
 
          */
+        // TODO: figure out how to rewrite this in lambda land?
         for (int i=0; i<contents.size(); i++) {
             if (contents.get(i).trim().equals("<div class=\"email\">")) {
                 if (i+2>=contents.size())   return null;    // expecting two more lines to follow
@@ -86,7 +142,7 @@ public class PageNotification {
                 if (!m.find())              return null;    // expecting to find user ID
                 String userId = m.group(1);
 
-                return new PageNotification(action,pageTitle,userId,sp.id);
+                return new PageNotification(action,pageTitle,userId,spaceId);
             }
         }
 
