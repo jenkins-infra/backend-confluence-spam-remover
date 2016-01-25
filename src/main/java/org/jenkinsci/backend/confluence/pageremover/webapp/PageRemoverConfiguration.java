@@ -11,10 +11,6 @@ public class PageRemoverConfiguration extends Configuration {
 
     @JsonProperty
     @NotEmpty
-    private String space;
-
-    @JsonProperty
-    @NotEmpty
     private String mailRecipient;
 
     @JsonProperty
@@ -30,10 +26,6 @@ public class PageRemoverConfiguration extends Configuration {
     @NotNull
     @Valid
     private LanguageBlockingConfiguration languageBlockingConfiguration = new LanguageBlockingConfiguration();
-
-    public String getSpace() {
-        return space;
-    }
 
     public String getMailRecipient() {
         return mailRecipient;

@@ -11,6 +11,8 @@ import org.jenkinsci.backend.confluence.pageremover.Connection;
 import org.jenkinsci.backend.confluence.pageremover.LanguageDetection;
 import org.jenkinsci.backend.confluence.pageremover.PageNotification;
 import org.jenkinsci.backend.confluence.pageremover.Space;
+import org.jenkinsci.backend.confluence.pageremover.Spambot;
+import org.jenkinsci.backend.confluence.pageremover.WordList;
 import org.jenkinsci.backend.ldap.AccountServer;
 import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -34,7 +37,6 @@ import static org.jenkinsci.backend.confluence.pageremover.Spambot.BLACKLIST;
 public class PageRemoverResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(PageRemoverResource.class);
 
-    private final String space;
     private final String mailRecipient;
     private final String smtpServer;
     private final AccountServer accountServer;
@@ -42,10 +44,9 @@ public class PageRemoverResource {
     private final float blockingProbability;
 
 
-    public PageRemoverResource(String space, String mailRecipient, String smtpServer,
+    public PageRemoverResource(String mailRecipient, String smtpServer,
                                AccountServer accountServer, List<String> languagesToBlock,
                                float blockingProbability) {
-        this.space = space;
         this.mailRecipient = mailRecipient;
         this.smtpServer = smtpServer;
         this.accountServer = accountServer;
@@ -173,5 +174,16 @@ public class PageRemoverResource {
         msg.setMsg(String.format("%s\n%s", subject, body));
         msg.send();
     }
+
+    public static final WordList BLACKLIST = new WordList();
+
+    static {
+        try {
+            BLACKLIST.load(PageRemoverResource.class.getClassLoader().getResource("blacklist.wl"));
+        } catch (IOException e) {
+            throw new Error(e);
+        }
+    }
+
 
 }

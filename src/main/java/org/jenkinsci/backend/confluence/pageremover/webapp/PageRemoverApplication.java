@@ -26,7 +26,6 @@ public class PageRemoverApplication extends Application<PageRemoverConfiguration
     public void run(PageRemoverConfiguration configuration, Environment environment) throws IOException {
 
         final PageRemoverResource resource = new PageRemoverResource(
-                configuration.getSpace(),
                 configuration.getMailRecipient(),
                 configuration.getSmtpServer(),
                 new AccountServer(configuration.getLdapServerConfiguration()),
