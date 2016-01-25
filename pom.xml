@@ -19,6 +19,13 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <target>1.8</target>
+          <source>1.8</source>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-jarsigner-plugin</artifactId>
         <version>1.2</version>
         <executions>
@@ -157,6 +164,11 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-email</artifactId>
       <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jool</artifactId>
+      <version>0.9.9</version>
     </dependency>
   </dependencies>
 

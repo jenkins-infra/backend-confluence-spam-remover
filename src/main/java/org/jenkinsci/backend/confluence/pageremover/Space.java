@@ -1,7 +1,10 @@
 package org.jenkinsci.backend.confluence.pageremover;
 
+import org.jooq.lambda.Unchecked;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.stream.Stream;
 
 /**
  * Known Wiki spaces, such as JENKINS, JA, and INFRA.
@@ -37,12 +40,10 @@ public class Space {
      * @return null if no space matches
      */
     public static Space find(MimeMessage msg) throws MessagingException {
-        for (Space s : SPACES) {
-            if (msg.getSubject().startsWith(s.subjectPrefix)
-            ||  msg.getSubject().startsWith(s.replySubjectPrefix))
-                return s;
-        }
-        return null;
+        return Stream.of(SPACES).filter(Unchecked.predicate(s ->
+                msg.getSubject().startsWith(s.subjectPrefix)
+                        || msg.getSubject().startsWith(s.replySubjectPrefix)))
+                .findFirst().orElse(null);
     }
 
     /**
@@ -51,11 +52,9 @@ public class Space {
      * @return null if no space matches
      */
     public static Space find(String subject) {
-        for (Space s : SPACES) {
-            if (subject.startsWith(s.subjectPrefix)
+        return Stream.of(SPACES).filter(s ->
+            subject.startsWith(s.subjectPrefix)
                     ||  subject.startsWith(s.replySubjectPrefix))
-                return s;
-        }
-        return null;
+                .findFirst().orElse(null);
     }
 }

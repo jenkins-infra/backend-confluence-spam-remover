@@ -128,6 +128,7 @@ public class PageNotification {
     <h4>Page  <b>added</b> by             <a href="https://wiki.jenkins-ci.org/display/~obatfarmasi">gilang kurniawan</a>
 
          */
+        // TODO: figure out how to rewrite this in lambda land?
         for (int i=0; i<contents.size(); i++) {
             if (contents.get(i).trim().equals("<div class=\"email\">")) {
                 if (i+2>=contents.size())   return null;    // expecting two more lines to follow

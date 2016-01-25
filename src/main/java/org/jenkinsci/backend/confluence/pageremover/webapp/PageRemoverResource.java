@@ -12,6 +12,7 @@ import org.jenkinsci.backend.confluence.pageremover.LanguageDetection;
 import org.jenkinsci.backend.confluence.pageremover.PageNotification;
 import org.jenkinsci.backend.confluence.pageremover.Space;
 import org.jenkinsci.backend.ldap.AccountServer;
+import org.jooq.lambda.Unchecked;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 import static org.jenkinsci.backend.confluence.pageremover.Spambot.BLACKLIST;
@@ -127,20 +129,19 @@ public class PageRemoverResource {
      * If a human replies to a notification email, take action.
      */
     private void removePage(String subject, String content) throws Exception {
-        for (String line : content.split("\n")) {
-            if (line.equals("KILL SPAM")) {
-                // instruction to remove
-                Space sp = Space.find(subject);
-                if (sp!=null) {
-                    String pageTitle = subject.substring(sp.replySubjectPrefix.length());
-                    LOGGER.info("Removing " + pageTitle);
-                    Connection con = new Connection();
-                    RemotePage pg = con.getPage(sp.id, pageTitle);
-                    removePage(con, pg);
-                    return;
-                }
-            }
-        }
+        Stream.of(content.split("\n"))
+                .filter(line -> line.equals("KILL SPAM"))
+                .forEach(Unchecked.consumer(line -> {
+                    // instruction to remove
+                    Space sp = Space.find(subject);
+                    if (sp != null) {
+                        String pageTitle = subject.substring(sp.replySubjectPrefix.length());
+                        LOGGER.info("Removing " + pageTitle);
+                        Connection con = new Connection();
+                        RemotePage pg = con.getPage(sp.id, pageTitle);
+                        removePage(con, pg);
+                    }
+                }));
     }
 
     private void removePage(Connection con, RemotePage pg) throws EmailException {
